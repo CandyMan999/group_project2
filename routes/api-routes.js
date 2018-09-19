@@ -7,34 +7,41 @@ module.exports = function (app) {
 
     app.get("/", function (req, res) {
         res.render("index");
-    });
+    })
+    // GET route for getting all of the todos 
 
-    // GET route for getting all of the todos
-    app.get("/api/food_plans", function (req, res) {
-        // db.Food_plans.findAll({}).then(function (result) {
-        //     return res.json(result);
-        // });
-        console.log("get /api/food_plans called");
 
-        var insertDietPlanIDHere = 1;
+    app.get("/api/food_plans/:TEE", function (req, res) {
 
-        console.log("testing insertDietPlanIDHere:  " + insertDietPlanIDHere);
-        
-        db.Plans.findAll({
+        var TEE = req.params.TEE;
+        console.log(TEE)
+
+        // sequelize query to find Food plans with totalKCal less than or equal to the TEE provided from front end
+        db.Food_plans.findAll({
             where: {
-                id: insertDietPlanIDHere
+                totalKcal:  { $lte: TEE }
             }
-        }).then(function (results) {
-            res.json(results);
+        }).then(function (result) {
+            return res.json(result);
         });
     });
 
+    // sequelize query route that displays all food plans
+    app.get("/api/food_plans", function (req, res, TEE) {
+        db.Food_plans.findAll({}).then(function (result) {
+            return res.json(result);
+        });
+    });
+
+    // example sequelize query route specifically for non-specific diet with a limit of 3500 calories
+    // calculation is done in the javascript
+    // this routes just finds all the food with no limiting factor and sends that data over
     app.get("/api/non_specific_3500cal", function (req, res) {
         // db.Food_plans.findAll({}).then(function (result) {
         //     return res.json(result);
         // });
         console.log("get /api/non_specific_3500cal called");
-        
+
         db.Foods.findAll({
         }).then(function (results) {
             console.log(results);
@@ -43,12 +50,16 @@ module.exports = function (app) {
         });
     });
 
+
+    // example sequelize query route specifically for a vegan diet with a limit of 2000 calories
+    // calculation is done in the javascript
+    // this routes just finds all the food limited by the isVeg=true condition and sends that data over
     app.get("/api/vegan_2000cal", function (req, res) {
         // db.Food_plans.findAll({}).then(function (result) {
         //     return res.json(result);
         // });
-        console.log("get /api/non_specific_3500cal called");
-        
+        console.log("get /api/vegann_2000cal called");
+
         db.Foods.findAll({
             where: {
                 isVeg: true
@@ -60,12 +71,12 @@ module.exports = function (app) {
         });
     });
 
+
+
     // POST route for saving a new todo. We can create todo with the data in req.body
     app.post("/api/food_plans", function (req, res) {
         // Take the request...
         console.log(req.body);
-
-
 
 
         // Then send it to the ORM to "save" into the DB.
