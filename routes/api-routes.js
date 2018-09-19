@@ -8,8 +8,16 @@ module.exports = function(app) {
     app.get("/", function(req, res){
         res.render("index");
     })
-  // GET route for getting all of the todos
-    app.get("/api/food_plans", function(req, res) {
+  // GET route for getting all of the todos 
+
+  app.get("/api/food_plans/:TEE", function(req, res) {
+      console.log(req.params.TEE)
+    db.Food_plans.findAll({}).then(function(result) {
+        return res.json(result);
+    });
+});
+
+    app.get("/api/food_plans", function(req, res, TEE) {
         db.Food_plans.findAll({}).then(function(result) {
             return res.json(result);
         });
