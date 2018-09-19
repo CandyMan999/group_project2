@@ -1,3 +1,8 @@
-#male:hover {
+.icon:hover {
     cursor: pointer;
 }
+
+#male {
+    color: red;
+}
+
