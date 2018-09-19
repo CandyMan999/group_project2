@@ -203,40 +203,40 @@ db.Foods.create({
 
 db.Foods.create({
     name: "Beef, Regular, Cooked",
-    kcal: 142,
-    serving_size: "2 oz",
+    kcal: 426,
+    serving_size: "6 oz",
     isVeg: false,
     isFree: true
 });
 
 db.Foods.create({
     name: "Chicken, Cooked",
-    kcal: 136,
-    serving_size: "2 oz",
+    kcal: 408,
+    serving_size: "6 oz",
     isVeg: false,
     isFree: true
 });
 
 db.Foods.create({
     name: "Tofu",
-    kcal: 86,
-    serving_size: "4 oz",
+    kcal: 172,
+    serving_size: "8 oz",
     isVeg: true,
     isFree: true
 });
 
 db.Foods.create({
     name: "Shrimp",
-    kcal: 56,
-    serving_size: "4 oz",
+    kcal: 112,
+    serving_size: "8 oz",
     isVeg: false,
     isFree: true
 });
 
 db.Foods.create({
     name: "Pork",
-    kcal: 137,
-    serving_size: "2 oz",
+    kcal: 548,
+    serving_size: "8 oz",
     isVeg: false,
     isFree: true
 });
@@ -260,27 +260,83 @@ db.Foods.create({
 db.Plans.create({
     name: "Diet Plan 1",
     isVeg: false,
-    isFree: true
+    isFree: false,
+    maxKcal: 2500
 });
 
 db.Plans.create({
     name: "Diet Plan 2",
     isVeg: false,
-    isFree: false
+    isFree: false,
+    maxKcal: 2000
 });
 
 db.Plans.create({
     name: "Diet Plan 3",
+    isVeg: false,
+    isFree: false,
+    maxKcal: 3000
+});
+
+db.Plans.create({
+    name: "Diet Plan 4",
+    isVeg: false,
+    isFree: true,
+    maxKcal: 2500
+});
+
+db.Plans.create({
+    name: "Diet Plan 5",
+    isVeg: false,
+    isFree: true,
+    maxKcal: 2000
+});
+
+db.Plans.create({
+    name: "Diet Plan 6",
+    isVeg: false,
+    isFree: true,
+    maxKcal: 3000
+});
+
+db.Plans.create({
+    name: "Diet Plan 7",
     isVeg: true,
-    isFree: true
+    isFree: true,
+    maxKcal: 2500
+});
+
+db.Plans.create({
+    name: "Diet Plan 8",
+    isVeg: true,
+    isFree: true,
+    maxKcal: 2000
+});
+
+db.Plans.create({
+    name: "Diet Plan 9",
+    isVeg: true,
+    isFree: true,
+    maxKcal: 3000
 });
 
 db.Food_plans.create({
-    plan_id: 1,
-    food_id: 1
+    plan_id: 2,
+    food_id: 1,
+    qty: 3,
+    totalKcal: 1224
 });
 
 db.Food_plans.create({
-    plan_id: 1,
-    food_id: 2
+    plan_id: 2,
+    food_id: 23,
+    qty: 2,
+    totalKcal: 618
+});
+
+db.Food_plans.create({
+    plan_id: 2,
+    food_id: 4,
+    qty: 1,
+    totalKcal: 151
 });
