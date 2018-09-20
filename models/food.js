@@ -6,5 +6,6 @@ module.exports = function(sequelize, DataTypes) {
       isVeg: DataTypes.BOOLEAN,
       isFree: DataTypes.BOOLEAN
     });
+
     return Foods;
   };

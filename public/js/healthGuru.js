@@ -140,6 +140,34 @@ $("#buttonID3").click(function () {
 });
 
 
+
+$("#buttonID4").click(function () {
+    console.log("find food plans #1 with food data button clicked!");
+
+    var ID = 2;
+
+    $.get("/api/food_plans_w_fooddata/" + ID, function (data) {
+        console.log("Posts: ", data);
+
+        // to save each food entry
+        var foodArray = [];
+
+        console.log("testing data length:  " + data.length + "\n");
+
+        console.log("starting loop to check each entry in data");
+        for (var x = 0; x < data.length; x++) {
+            console.log(data[x]);
+            console.log("testing data[" + x + "].name value:  " + data[x].name);
+            console.log("testing data[" + x + "].kcal value:  " + data[x].kcal);
+
+
+        }
+    });
+
+
+});
+
+
 // let dietPlan1 = 3500;
 // let dietPlan2 = 3000;
 // let dietPlan3 = 2500;

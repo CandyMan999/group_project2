@@ -11,20 +11,91 @@ module.exports = function (app) {
     // GET route for getting all of the todos 
 
 
-    app.get("/api/food_plans/:TEE", function (req, res) {
+    // get food plans with no other condition other than based on calorie value from TEE
+    app.get("/api/plans/:TEE", function (req, res) {
 
         var TEE = req.params.TEE;
-        console.log(TEE)
+        console.log("Testing req.params.TEE value:  " + TEE);
 
-        // sequelize query to find Food plans with totalKCal less than or equal to the TEE provided from front end
-        db.Food_plans.findAll({
+        // sequelize query to find Food plans with maxKCal less than or equal to the TEE provided from front end
+        db.Plans.findAll({
             where: {
-                totalKcal:  { $lte: TEE }
+                maxKcal: { $lte: TEE }
             }
         }).then(function (result) {
             return res.json(result);
         });
     });
+
+    // get from Plans based on two parameters(TEE + foodoption, either "Vegan" or "GlutenFree" flag here sent by frontend)
+    app.get("/api/plans/:TEE&:foodoption", function (req, res) {
+
+        var TEE = req.params.TEE;
+        console.log("Testing req.params.TEE value:  " + TEE);
+
+        var foodOption = req.params.foodoption;
+        console.log("Testing req.params.foodoption value:  " + foodOption);
+
+        if (foodOption === "Vegan") {
+            // sequelize query to find Food plans with maxKCal less than or equal to the TEE provided from front end
+            db.Plans.findAll({
+                where: {
+                    totalKcal: { $lte: TEE },
+                    isVeg: true
+                }
+            }).then(function (result) {
+                return res.json(result);
+            });
+
+        } else if (foodOption === "GlutenFree") {
+            // sequelize query to find Food plans with totalKCal less than or equal to the TEE provided from front end
+            db.Plans.findAll({
+                where: {
+                    totalKcal: { $lte: TEE },
+                    isFree: true
+                }
+            }).then(function (result) {
+                return res.json(result);
+            });
+        }
+
+    });
+
+
+    // get Food Plans based on ID from Plans table
+    app.get("/api/food_plans/:ID", function (req, res) {
+
+        var ID = req.params.ID;
+        console.log("Testing req.params.ID value:  " + ID);
+
+        db.Food_plans.findAll({
+            where: {
+                plan_id: ID
+            }
+        }).then(function (result) {
+            return res.json(result);
+        });
+    });
+
+
+    // get Food Plans based on ID from Plans table
+    // also should include related food data from Foods table
+    app.get("/api/food_plans_w_fooddata/:ID", function (req, res) {
+        console.log("\napi test route for grabbing food plans with food data triggered")
+        var ID = req.params.ID;
+        console.log("Testing req.params.ID value:  " + ID);
+
+        db.Food_plans.findAll({
+            where: {
+                plan_id: ID
+            },
+            include: [db.Foods]
+        }).then(function (result) {
+            return res.json(result);
+        });
+    });
+
+
 
     // sequelize query route that displays all food plans
     app.get("/api/food_plans", function (req, res, TEE) {
@@ -33,70 +104,31 @@ module.exports = function (app) {
         });
     });
 
-    // example sequelize query route specifically for non-specific diet with a limit of 3500 calories
-    // calculation is done in the javascript
-    // this routes just finds all the food with no limiting factor and sends that data over
-    app.get("/api/non_specific_3500cal", function (req, res) {
-        // db.Food_plans.findAll({}).then(function (result) {
-        //     return res.json(result);
-        // });
-        console.log("get /api/non_specific_3500cal called");
 
-        db.Foods.findAll({
-        }).then(function (results) {
-            console.log(results);
-
-            res.json(results);
-        });
-    });
+    // // POST route for saving a new todo. We can create todo with the data in req.body
+    // app.post("/api/food_plans", function (req, res) {
+    //     // Take the request...
+    //     console.log(req.body);
 
 
-    // example sequelize query route specifically for a vegan diet with a limit of 2000 calories
-    // calculation is done in the javascript
-    // this routes just finds all the food limited by the isVeg=true condition and sends that data over
-    app.get("/api/vegan_2000cal", function (req, res) {
-        // db.Food_plans.findAll({}).then(function (result) {
-        //     return res.json(result);
-        // });
-        console.log("get /api/vegann_2000cal called");
-
-        db.Foods.findAll({
-            where: {
-                isVeg: true
-            }
-        }).then(function (results) {
-            console.log(results);
-
-            res.json(results);
-        });
-    });
+    //     // Then send it to the ORM to "save" into the DB.
+    //     db.Food_plans.create({
 
 
 
-    // POST route for saving a new todo. We can create todo with the data in req.body
-    app.post("/api/food_plans", function (req, res) {
-        // Take the request...
-        console.log(req.body);
+    //     }).then(function (data) {
+    //         return res.json(data);
+    //     })
+    // });
 
+    // // DELETE route for deleting todos. We can get the id of the todo to be deleted from
+    // // req.params.id
+    // app.delete("/api/food_plans/:id", function (req, res) {
 
-        // Then send it to the ORM to "save" into the DB.
-        db.Food_plans.create({
+    // });
 
+    // // PUT route for updating todos. We can get the updated todo data from req.body
+    // app.put("/api/todos", function (req, res) {
 
-
-        }).then(function (data) {
-            return res.json(data);
-        })
-    });
-
-    // DELETE route for deleting todos. We can get the id of the todo to be deleted from
-    // req.params.id
-    app.delete("/api/food_plans/:id", function (req, res) {
-
-    });
-
-    // PUT route for updating todos. We can get the updated todo data from req.body
-    app.put("/api/todos", function (req, res) {
-
-    });
+    // });
 };

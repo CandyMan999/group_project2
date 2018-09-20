@@ -33,4 +33,10 @@ Object.keys(db).forEach(function(modelName) {
 db.sequelize = sequelize;
 db.Sequelize = Sequelize;
 
+// Relations
+db.Plans.hasMany(db.Food_plans, {foreignkey: "plan_id", sourcekey: "id"});
+db.Food_plans.hasMany(db.Foods, {foreignkey: "id", sourcekey: "food_id"});
+// db.Foods.belongsToMany(db.Food_plans);
+db.Food_plans.belongsTo(db.Plans);
+
 module.exports = db;
