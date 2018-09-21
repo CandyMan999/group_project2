@@ -11,6 +11,7 @@ module.exports = function (app) {
     // GET route for getting all of the todos 
 
 
+<<<<<<< HEAD
     app.get('/api/Plans', function(req, res) {
     
         console.log("this is my api BMI : ", req.query.BMI)
@@ -28,6 +29,16 @@ module.exports = function (app) {
         }
         else {
             whereClause.maxKcal = {$gte: TEE};
+=======
+    app.get('/api/plans', function (req, res) {
+
+
+        const TEE = req.query.TEE
+        const isVeg = req.query.isVeg
+        const isFree = req.query.isFree
+        let whereClause = {
+            maxKcal: { $lte: TEE },
+>>>>>>> master
         }
         if (isVeg === "1" || isVeg === "0") {
             whereClause.isVeg = isVeg;
@@ -37,11 +48,19 @@ module.exports = function (app) {
             whereClause.isFree = isFree;
             console.log("isFree");
         }
+<<<<<<< HEAD
  
         console.log("my where clause " ,whereClause);
         console.log(TEE);
        
          console.log("these are my variables im passing: ", TEE, isVeg, isFree);
+=======
+
+        console.log("my where clause ", whereClause);
+        console.log(TEE);
+        // "/api/food_plans?gf=true&vegan=true&maxCal=3000"
+        console.log("these are my variables im passing: ", TEE, isVeg, isFree);
+>>>>>>> master
         db.Plans.findAll({
             where: whereClause
         }).then(function (result) {
@@ -60,7 +79,27 @@ module.exports = function (app) {
             return res.json(result);
             
         });
-    })
+    });
+
+    // get Food Plans based on ID from Plans table
+    // will also grab all related food data and puts it into a Food array when sent back to front-end
+    app.get("/api/food_plans/:ID", function (req, res) {
+        console.log("test route hit successfully");
+
+        var PlanID = req.params.ID;
+
+        console.log("query using PlanID = " + PlanID);
+
+        db.Plans.findAll({
+            where: { id: PlanID },
+
+            include: [{ all: true }]
+
+        }).then(function (result) {
+            return res.json(result);
+        });
+    });
+
 
     app.get('/api/Foods', function(req, res) {
         console.log("this is my food item ", req.query)
@@ -136,30 +175,30 @@ module.exports = function (app) {
 
 
 
-    // POST route for saving a new todo. We can create todo with the data in req.body
-    app.post("/api/food_plans", function (req, res) {
-        // Take the request...
-        console.log(req.body);
+    // // POST route for saving a new todo. We can create todo with the data in req.body
+    // app.post("/api/food_plans", function (req, res) {
+    //     // Take the request...
+    //     console.log(req.body);
 
 
-        // Then send it to the ORM to "save" into the DB.
-        db.Food_plans.create({
+    //     // Then send it to the ORM to "save" into the DB.
+    //     db.Food_plans.create({
 
 
 
-        }).then(function (data) {
-            return res.json(data);
-        })
-    });
+    //     }).then(function (data) {
+    //         return res.json(data);
+    //     })
+    // });
 
-    // DELETE route for deleting todos. We can get the id of the todo to be deleted from
-    // req.params.id
-    app.delete("/api/food_plans/:id", function (req, res) {
+    // // DELETE route for deleting todos. We can get the id of the todo to be deleted from
+    // // req.params.id
+    // app.delete("/api/food_plans/:id", function (req, res) {
 
-    });
+    // });
 
-    // PUT route for updating todos. We can get the updated todo data from req.body
-    app.put("/api/todos", function (req, res) {
+    // // PUT route for updating todos. We can get the updated todo data from req.body
+    // app.put("/api/todos", function (req, res) {
 
-    });
+    // });
 };
