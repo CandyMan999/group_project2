@@ -11,65 +11,94 @@ module.exports = function (app) {
     // GET route for getting all of the todos 
 
 
-    app.get("/api/food_plans/:TEE", function (req, res) {
+    app.get('/api/food_plans', function(req, res) {
+        
 
-        var TEE = req.params.TEE;
-        console.log(TEE)
+        const TEE = req.query.TEE
+        const isVeg = req.query.isVeg
+        const isFree = req.query.isFree
+        let whereClause = {
+             maxKcal: {$lte: TEE},
+        }
+        if (isVeg === "1" || isVeg === "0") {
+            whereClause.isVeg = isVeg;
+            console.log("isVeg");
+        }
+        if (isFree === "1" || isFree === "0") {
+            whereClause.isFree = isFree;
+            console.log("isFree");
+        }
 
-        // sequelize query to find Food plans with totalKCal less than or equal to the TEE provided from front end
-        db.Food_plans.findAll({
-            where: {
-                totalKcal:  { $lte: TEE }
-            }
+        console.log("my where clause " ,whereClause);
+        console.log(TEE);
+       // "/api/food_plans?gf=true&vegan=true&maxCal=3000"
+         console.log("these are my variables im passing: ", TEE, isVeg, isFree);
+        db.Plans.findAll({
+            where: whereClause
         }).then(function (result) {
             return res.json(result);
         });
-    });
+    })
 
-    // sequelize query route that displays all food plans
-    app.get("/api/food_plans", function (req, res, TEE) {
-        db.Food_plans.findAll({}).then(function (result) {
-            return res.json(result);
-        });
-    });
+    // app.get("/api/food_plans/:TEE", function (req, res) {
 
-    // example sequelize query route specifically for non-specific diet with a limit of 3500 calories
-    // calculation is done in the javascript
-    // this routes just finds all the food with no limiting factor and sends that data over
-    app.get("/api/non_specific_3500cal", function (req, res) {
-        // db.Food_plans.findAll({}).then(function (result) {
-        //     return res.json(result);
-        // });
-        console.log("get /api/non_specific_3500cal called");
+    //     var TEE = req.params.TEE;
+    //     console.log(TEE)
 
-        db.Foods.findAll({
-        }).then(function (results) {
-            console.log(results);
+    //     // sequelize query to find Food plans with totalKCal less than or equal to the TEE provided from front end
+    //     db.Food_plans.findAll({
+    //         where: {
+    //             totalKcal:  { $lte: TEE }
+    //         }
+    //     }).then(function (result) {
+    //         return res.json(result);
+    //     });
+    // });
 
-            res.json(results);
-        });
-    });
+    // // sequelize query route that displays all food plans
+    // app.get("/api/food_plans", function (req, res, TEE) {
+    //     db.Food_plans.findAll({}).then(function (result) {
+    //         return res.json(result);
+    //     });
+    // });
+
+    // // example sequelize query route specifically for non-specific diet with a limit of 3500 calories
+    // // calculation is done in the javascript
+    // // this routes just finds all the food with no limiting factor and sends that data over
+    // app.get("/api/non_specific_3500cal", function (req, res) {
+    //     // db.Food_plans.findAll({}).then(function (result) {
+    //     //     return res.json(result);
+    //     // });
+    //     console.log("get /api/non_specific_3500cal called");
+
+    //     db.Foods.findAll({
+    //     }).then(function (results) {
+    //         console.log(results);
+
+    //         res.json(results);
+    //     });
+    // });
 
 
-    // example sequelize query route specifically for a vegan diet with a limit of 2000 calories
-    // calculation is done in the javascript
-    // this routes just finds all the food limited by the isVeg=true condition and sends that data over
-    app.get("/api/vegan_2000cal", function (req, res) {
-        // db.Food_plans.findAll({}).then(function (result) {
-        //     return res.json(result);
-        // });
-        console.log("get /api/vegann_2000cal called");
+    // // example sequelize query route specifically for a vegan diet with a limit of 2000 calories
+    // // calculation is done in the javascript
+    // // this routes just finds all the food limited by the isVeg=true condition and sends that data over
+    // app.get("/api/vegan_2000cal", function (req, res) {
+    //     // db.Food_plans.findAll({}).then(function (result) {
+    //     //     return res.json(result);
+    //     // });
+    //     console.log("get /api/vegann_2000cal called");
 
-        db.Foods.findAll({
-            where: {
-                isVeg: true
-            }
-        }).then(function (results) {
-            console.log(results);
+    //     db.Foods.findAll({
+    //         where: {
+    //             isVeg: true
+    //         }
+    //     }).then(function (results) {
+    //         console.log(results);
 
-            res.json(results);
-        });
-    });
+    //         res.json(results);
+    //     });
+    // });
 
 
 
