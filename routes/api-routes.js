@@ -11,7 +11,6 @@ module.exports = function (app) {
     // GET route for getting all of the todos 
 
 
-<<<<<<< HEAD
     app.get('/api/Plans', function(req, res) {
     
         console.log("this is my api BMI : ", req.query.BMI)
@@ -29,16 +28,6 @@ module.exports = function (app) {
         }
         else {
             whereClause.maxKcal = {$gte: TEE};
-=======
-    app.get('/api/plans', function (req, res) {
-
-
-        const TEE = req.query.TEE
-        const isVeg = req.query.isVeg
-        const isFree = req.query.isFree
-        let whereClause = {
-            maxKcal: { $lte: TEE },
->>>>>>> master
         }
         if (isVeg === "1" || isVeg === "0") {
             whereClause.isVeg = isVeg;
@@ -48,19 +37,11 @@ module.exports = function (app) {
             whereClause.isFree = isFree;
             console.log("isFree");
         }
-<<<<<<< HEAD
  
         console.log("my where clause " ,whereClause);
         console.log(TEE);
        
          console.log("these are my variables im passing: ", TEE, isVeg, isFree);
-=======
-
-        console.log("my where clause ", whereClause);
-        console.log(TEE);
-        // "/api/food_plans?gf=true&vegan=true&maxCal=3000"
-        console.log("these are my variables im passing: ", TEE, isVeg, isFree);
->>>>>>> master
         db.Plans.findAll({
             where: whereClause
         }).then(function (result) {
