@@ -146,23 +146,24 @@ $("#buttonID4").click(function () {
 
     var ID = 2;
 
-    $.get("/api/food_plans_w_fooddata/" + ID, function (data) {
+    $.get("/api/test", function (data) {
         console.log("Posts: ", data);
+    }
 
-        // to save each food entry
-        var foodArray = [];
+    // $.get("/api/food_plans_w_fooddata/" + ID, function (data) {
+    //     console.log("Posts: ", data);
 
-        console.log("testing data length:  " + data.length + "\n");
+    //     console.log("testing data length:  " + data.length + "\n");
 
-        console.log("starting loop to check each entry in data");
-        for (var x = 0; x < data.length; x++) {
-            console.log(data[x]);
-            console.log("testing data[" + x + "].name value:  " + data[x].name);
-            console.log("testing data[" + x + "].kcal value:  " + data[x].kcal);
+    //     console.log("starting loop to check each entry in data");
+    //     for (var x = 0; x < data.length; x++) {
+    //         console.log(data[x]);
+    //         console.log("testing data[" + x + "].name value:  " + data[x].name);
+    //         console.log("testing data[" + x + "].kcal value:  " + data[x].kcal);
 
 
-        }
-    });
+    //     }
+    // });
 
 
 });

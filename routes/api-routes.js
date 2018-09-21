@@ -27,6 +27,17 @@ module.exports = function (app) {
         });
     });
 
+    app.get("/api/test", function (req, res) {
+
+        db.Plans.findAll({
+
+            include: [{all: true}]
+
+        }).then(function (result) {
+            return res.json(result);
+        });
+    });
+
     // get from Plans based on two parameters(TEE + foodoption, either "Vegan" or "GlutenFree" flag here sent by frontend)
     app.get("/api/plans/:TEE&:foodoption", function (req, res) {
 
