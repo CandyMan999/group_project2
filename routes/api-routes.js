@@ -11,56 +11,34 @@ module.exports = function (app) {
     // GET route for getting all of the todos 
 
 
-    // get food plans with no other condition other than based on calorie value from TEE
-    app.get("/api/plans/:TEE", function (req, res) {
+    app.get('/api/plans', function (req, res) {
 
-        var TEE = req.params.TEE;
-        console.log("Testing req.params.TEE value:  " + TEE);
 
-        // sequelize query to find Food plans with maxKCal less than or equal to the TEE provided from front end
+        const TEE = req.query.TEE
+        const isVeg = req.query.isVeg
+        const isFree = req.query.isFree
+        let whereClause = {
+            maxKcal: { $lte: TEE },
+        }
+        if (isVeg === "1" || isVeg === "0") {
+            whereClause.isVeg = isVeg;
+            console.log("isVeg");
+        }
+        if (isFree === "1" || isFree === "0") {
+            whereClause.isFree = isFree;
+            console.log("isFree");
+        }
+
+        console.log("my where clause ", whereClause);
+        console.log(TEE);
+        // "/api/food_plans?gf=true&vegan=true&maxCal=3000"
+        console.log("these are my variables im passing: ", TEE, isVeg, isFree);
         db.Plans.findAll({
-            where: {
-                maxKcal: { $lte: TEE }
-            }
+            where: whereClause
         }).then(function (result) {
             return res.json(result);
         });
     });
-
-    // get from Plans based on two parameters(TEE + foodoption, either "Vegan" or "GlutenFree" flag here sent by frontend)
-    app.get("/api/plans/:TEE&:foodoption", function (req, res) {
-
-        var TEE = req.params.TEE;
-        console.log("Testing req.params.TEE value:  " + TEE);
-
-        var foodOption = req.params.foodoption;
-        console.log("Testing req.params.foodoption value:  " + foodOption);
-
-        if (foodOption === "Vegan") {
-            // sequelize query to find Food plans with maxKCal less than or equal to the TEE provided from front end
-            db.Plans.findAll({
-                where: {
-                    totalKcal: { $lte: TEE },
-                    isVeg: true
-                }
-            }).then(function (result) {
-                return res.json(result);
-            });
-
-        } else if (foodOption === "GlutenFree") {
-            // sequelize query to find Food plans with totalKCal less than or equal to the TEE provided from front end
-            db.Plans.findAll({
-                where: {
-                    totalKcal: { $lte: TEE },
-                    isFree: true
-                }
-            }).then(function (result) {
-                return res.json(result);
-            });
-        }
-
-    });
-
 
     // get Food Plans based on ID from Plans table
     // will also grab all related food data and puts it into a Food array when sent back to front-end
@@ -72,9 +50,9 @@ module.exports = function (app) {
         console.log("query using PlanID = " + PlanID);
 
         db.Plans.findAll({
-            where: { id : PlanID},
+            where: { id: PlanID },
 
-            include: [{all: true}]
+            include: [{ all: true }]
 
         }).then(function (result) {
             return res.json(result);
@@ -82,12 +60,66 @@ module.exports = function (app) {
     });
 
 
-    // sequelize query route that displays all food plans
-    app.get("/api/food_plans", function (req, res, TEE) {
-        db.Food_plans.findAll({}).then(function (result) {
-            return res.json(result);
-        });
-    });
+    // app.get("/api/food_plans/:TEE", function (req, res) {
+
+    //     var TEE = req.params.TEE;
+    //     console.log(TEE)
+
+    //     // sequelize query to find Food plans with totalKCal less than or equal to the TEE provided from front end
+    //     db.Food_plans.findAll({
+    //         where: {
+    //             totalKcal:  { $lte: TEE }
+    //         }
+    //     }).then(function (result) {
+    //         return res.json(result);
+    //     });
+    // });
+
+    // // sequelize query route that displays all food plans
+    // app.get("/api/food_plans", function (req, res, TEE) {
+    //     db.Food_plans.findAll({}).then(function (result) {
+    //         return res.json(result);
+    //     });
+    // });
+
+    // // example sequelize query route specifically for non-specific diet with a limit of 3500 calories
+    // // calculation is done in the javascript
+    // // this routes just finds all the food with no limiting factor and sends that data over
+    // app.get("/api/non_specific_3500cal", function (req, res) {
+    //     // db.Food_plans.findAll({}).then(function (result) {
+    //     //     return res.json(result);
+    //     // });
+    //     console.log("get /api/non_specific_3500cal called");
+
+    //     db.Foods.findAll({
+    //     }).then(function (results) {
+    //         console.log(results);
+
+    //         res.json(results);
+    //     });
+    // });
+
+
+    // // example sequelize query route specifically for a vegan diet with a limit of 2000 calories
+    // // calculation is done in the javascript
+    // // this routes just finds all the food limited by the isVeg=true condition and sends that data over
+    // app.get("/api/vegan_2000cal", function (req, res) {
+    //     // db.Food_plans.findAll({}).then(function (result) {
+    //     //     return res.json(result);
+    //     // });
+    //     console.log("get /api/vegann_2000cal called");
+
+    //     db.Foods.findAll({
+    //         where: {
+    //             isVeg: true
+    //         }
+    //     }).then(function (results) {
+    //         console.log(results);
+
+    //         res.json(results);
+    //     });
+    // });
+
 
 
     // // POST route for saving a new todo. We can create todo with the data in req.body
