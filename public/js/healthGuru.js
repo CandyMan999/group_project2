@@ -172,6 +172,49 @@ const calcWeight = function () {
     }
 }
 
+// Use this route $.get("/api/food_plans/" + ID, function (data) {
+// Query this after the user has selected a diet plan from Plans table first
+// then use the Plans ID here to query this route
+// It will return data from Plans table and all related FOOD data from the Foods table
+// that is tied to that particular plan
+$("#buttonID4").click(function () {
+    console.log("find food plans #1 with food data button clicked!");
+
+    var ID = 1;
+
+    console.log("testing ID: " + ID);
+
+    $.get("/api/food_plans/" + ID, function (data) {
+        console.log("Posts: ", data);
+
+        console.log("testing data length:  " + data.length + "\n");
+
+        console.log(data[0]);
+
+        var Data = data[0];
+
+        console.log("testing Data.name:  " + Data.name);
+        console.log("testing Data.maxKcal:  " + Data.maxKcal);
+        console.log("testing Data.isFree:  " + Data.isFree);
+        console.log("testing Data.isVeg:  " + Data.isVeg);
+
+        console.log("\n==================================");
+        console.log("Testing food array");
+
+        for (var x = 0; x < Data.Foods.length; x++) {
+            console.log(Data.Foods[x]);
+            console.log("testing Data.Foods[" + x + "].name value:  " + Data.Foods[x].name);
+            console.log("testing Data.Foods[" + x + "].serving_size value:  " + Data.Foods[x].serving_size);
+            console.log("testing Data.Foods[" + x + "].kcal value:  " + Data.Foods[x].kcal);
+        }
+        console.log("\n==================================\n");
+
+
+    })
+
+
+});
+
 // Note for other group members:
 // I put these into random buttons I made in an index.html
 // if you want to use handlebars, you will need to delete that index.html file that I randomly made to test these buttons
@@ -266,6 +309,7 @@ const calcWeight = function () {
 
 
 // });
+
 
 
 // let dietPlan1 = 3500;
