@@ -27,17 +27,6 @@ module.exports = function (app) {
         });
     });
 
-    app.get("/api/test", function (req, res) {
-
-        db.Plans.findAll({
-
-            include: [{all: true}]
-
-        }).then(function (result) {
-            return res.json(result);
-        });
-    });
-
     // get from Plans based on two parameters(TEE + foodoption, either "Vegan" or "GlutenFree" flag here sent by frontend)
     app.get("/api/plans/:TEE&:foodoption", function (req, res) {
 
@@ -74,38 +63,23 @@ module.exports = function (app) {
 
 
     // get Food Plans based on ID from Plans table
+    // will also grab all related food data and puts it into a Food array when sent back to front-end
     app.get("/api/food_plans/:ID", function (req, res) {
+        console.log("test route hit successfully");
 
-        var ID = req.params.ID;
-        console.log("Testing req.params.ID value:  " + ID);
+        var PlanID = req.params.ID;
 
-        db.Food_plans.findAll({
-            where: {
-                plan_id: ID
-            }
+        console.log("query using PlanID = " + PlanID);
+
+        db.Plans.findAll({
+            where: { id : PlanID},
+
+            include: [{all: true}]
+
         }).then(function (result) {
             return res.json(result);
         });
     });
-
-
-    // get Food Plans based on ID from Plans table
-    // also should include related food data from Foods table
-    app.get("/api/food_plans_w_fooddata/:ID", function (req, res) {
-        console.log("\napi test route for grabbing food plans with food data triggered")
-        var ID = req.params.ID;
-        console.log("Testing req.params.ID value:  " + ID);
-
-        db.Food_plans.findAll({
-            where: {
-                plan_id: ID
-            },
-            include: [db.Foods]
-        }).then(function (result) {
-            return res.json(result);
-        });
-    });
-
 
 
     // sequelize query route that displays all food plans

@@ -144,26 +144,37 @@ $("#buttonID3").click(function () {
 $("#buttonID4").click(function () {
     console.log("find food plans #1 with food data button clicked!");
 
-    var ID = 2;
+    var ID = 1;
 
-    $.get("/api/test", function (data) {
+    console.log("testing ID: " + ID);
+
+    $.get("/api/food_plans/" + ID, function (data) {
         console.log("Posts: ", data);
-    }
 
-    // $.get("/api/food_plans_w_fooddata/" + ID, function (data) {
-    //     console.log("Posts: ", data);
+        console.log("testing data length:  " + data.length + "\n");
 
-    //     console.log("testing data length:  " + data.length + "\n");
+        console.log(data[0]);
 
-    //     console.log("starting loop to check each entry in data");
-    //     for (var x = 0; x < data.length; x++) {
-    //         console.log(data[x]);
-    //         console.log("testing data[" + x + "].name value:  " + data[x].name);
-    //         console.log("testing data[" + x + "].kcal value:  " + data[x].kcal);
+        var Data = data[0];
+
+        console.log("testing Data.name:  " + Data.name);
+        console.log("testing Data.maxKcal:  " + Data.maxKcal);
+        console.log("testing Data.isFree:  " + Data.isFree);
+        console.log("testing Data.isVeg:  " + Data.isVeg);
+
+        console.log("\n==================================");
+        console.log("Testing food array");
+
+        for (var x = 0; x < Data.Foods.length; x++) {
+            console.log(Data.Foods[x]);
+            console.log("testing Data.Foods[" + x + "].name value:  " + Data.Foods[x].name);
+            console.log("testing Data.Foods[" + x + "].serving_size value:  " + Data.Foods[x].serving_size);
+            console.log("testing Data.Foods[" + x + "].kcal value:  " + Data.Foods[x].kcal);
+        }
+        console.log("\n==================================\n");
 
 
-    //     }
-    // });
+    })
 
 
 });
