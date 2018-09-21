@@ -11,14 +11,23 @@ module.exports = function (app) {
     // GET route for getting all of the todos 
 
 
-    app.get('/api/food_plans', function(req, res) {
-        
-
+    app.get('/api/Plans', function(req, res) {
+    
+        console.log("this is my api BMI : ", req.query.BMI)
+        const BMI = req.query.BMI
         const TEE = req.query.TEE
         const isVeg = req.query.isVeg
         const isFree = req.query.isFree
-        let whereClause = {
-             maxKcal: {$lte: TEE},
+
+        let whereClause = {   
+        }
+        if(BMI > 24.9) {
+            whereClause.maxKcal = {$lte: TEE};
+        } else if (BMI >= 18.5 & BMI <= 24.9) {
+            whereClause.maxKcal = {$gte: TEE};
+        }
+        else {
+            whereClause.maxKcal = {$gte: TEE};
         }
         if (isVeg === "1" || isVeg === "0") {
             whereClause.isVeg = isVeg;
@@ -28,18 +37,43 @@ module.exports = function (app) {
             whereClause.isFree = isFree;
             console.log("isFree");
         }
-
+ 
         console.log("my where clause " ,whereClause);
         console.log(TEE);
-       // "/api/food_plans?gf=true&vegan=true&maxCal=3000"
+       
          console.log("these are my variables im passing: ", TEE, isVeg, isFree);
         db.Plans.findAll({
             where: whereClause
         }).then(function (result) {
             return res.json(result);
+            
         });
     })
 
+    app.get('/api/food_plans', function(req, res) {
+        console.log(req.query.id)
+        db.Food_plans.findAll({
+            where: {
+                plan_id: req.query.id
+            }
+        }).then(function (result) {
+            return res.json(result);
+            
+        });
+    })
+
+    app.get('/api/Foods', function(req, res) {
+        console.log("this is my food item ", req.query)
+       
+        db.Foods.findAll({
+            where: {
+                id: req.query.id
+            }
+        }).then(function (result) {
+            return res.json(result);
+            
+        });
+    })
     // app.get("/api/food_plans/:TEE", function (req, res) {
 
     //     var TEE = req.params.TEE;

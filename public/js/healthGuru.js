@@ -9,7 +9,13 @@ let poundsToGoal;
 let idealPounds;
 let phraseThatPays;
 let TEE;
+let quantity;
+let dietPlan;
 
+
+$("#logo").on('click', function(){
+    location.reload();
+})
 
 $("#learnMore").on("click", function () {
 
@@ -37,8 +43,8 @@ const results = function () {
 
     let resultsDiv =
         `
-                    <h2>Your Results</h2>
-                        <div class="row">
+                    <h2 class="results">Your Results</h2>
+                        <div class="row results">
                             <div class="col-sm-6">
                                 <ul>
                                     <li> your BMI is ${BMI.toFixed(2)} </li> 
@@ -51,22 +57,22 @@ const results = function () {
                             </div> 
                             
                         </div>
-                        <div id="goal" class="row">
+                        <div id="goal" class="row results">
                                 
                             <p>You need to ${phraseThatPays}: ${poundsToGoal} pounds to reach a healthy weight</p> 
                     
                         </div>
-                        <div class="row">
+                        <div class="row results">
                                 
                             <p>Your daily caloric burn rate is: ${TEE}</p> 
                     
                         </div>
-                        <h1 class="text-center"><strong>Select your diet plan options </strong></h1>
-                        <div class="text-center">
+                        <h1 class="text-center results"><strong>Select your diet plan options </strong></h1>
+                        <div class="text-center results">
                             <button type="button" id="vegan" data-clicked=0 class="btn btn-light btn-lg planIcons text-center"><img src="https://cdn1.iconfinder.com/data/icons/flat-green-organic-natural-badges/500/Vegan-2-512.png"></button>
                             <button type="button" id="gluten" data-clicked=0 class="btn btn-light btn-lg planIcons text-center"><img src="https://www.mindfullysplendid.com/wp-content/uploads/2016/09/gluten-free-icon.png"></button>
                         </div>
-                        <button id="customPlan" type="button" class="btn btn-primary btn-lg btn-block">Search Plans Custom For You!!</button>
+                        <button id="customPlan" type="button" class="btn btn-primary btn-lg btn-block results">Search Plans Custom For You!!</button>
 
                         `
     $("#attach").append(resultsDiv);
@@ -78,20 +84,103 @@ const results = function () {
 }
 
 $("#attach").on("click", "#customPlan", function () {
-
+   
 
     let isVeg = $("#vegan").data("clicked");
     let isFree = $("#gluten").data("clicked");
     console.log("This is what I am trying to isVeg: ", isVeg);
     console.log("This is what I am trying to isFree: ", isFree);
 
-    let queryString = `/api/food_plans?TEE=${TEE}&isVeg=${isVeg}&isFree=${isFree}`
+    let queryString = `/api/Plans?TEE=${TEE}&isVeg=${isVeg}&isFree=${isFree}&BMI=${BMI}`
 
     $.get(queryString, function (data) {
+        $(".results").detach();
         console.log("my api worked", data);
+        data.forEach(element => {
+        let selecetPlan = 
+        `<button type="button" value="${element.id}" data-cal="${element.maxKcal}" class="btn btn-primary btn-lg picked"> ${element.name} calories: ${element.maxKcal}</button>`
+        
+        $("#attach").append(selecetPlan);
+        });
+        
+
     })
 })
 
+$("#attach").on('click', '.picked', function(){
+    $(".table").remove();
+    $(".phrase").remove();
+  
+    let table =  `<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Food Item</th>
+        <th scope="col">Serving Size</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Kcal</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      
+    </tbody>
+  </table>`
+$("#attach").append(table)
+
+
+    console.log($(this).val());
+    let id = $(this).val();
+    dietPlan = $(this).data('cal');
+
+    if (TEE > dietPlan) {
+        let daysToGoal = ((poundsToGoal * 3500) / (TEE - dietPlan));
+        console.log("Days to reach target weight with this diet Plan: ", daysToGoal);
+        let goalPhrase = `<p class="phrase">Days to reach target weight with this diet Plan: ${parseInt(daysToGoal)}</p>`
+        $("#attach").prepend(goalPhrase);
+    } else {
+        let daysToGoal = ((poundsToGoal * 3500) / (dietPlan - TEE));
+        console.log("Days to reach target weight with this diet Plan: ", daysToGoal);
+        let goalPhrase = `<p class="phrase">Days to reach target weight with this diet Plan: ${parseInt(daysToGoal)}</p>`
+        $("#attach").prepend(goalPhrase);
+    }
+
+    
+    console.log("this is the diet plan calories: ", dietPlan)
+    let queryString = `/api/food_plans?id=${id}`
+    
+    $.get(queryString, function (data){
+        
+        console.log("this new api work: ", data);
+        data.forEach((element, i) => {
+            quantity = element.qty
+            let qty = `<td>${quantity}</td>`
+            
+            console.log("this is my quantity: ", quantity);
+            console.log("this is inside the for loop: ", element.food_id)
+            let foodItem = element.food_id;
+            $.get(`/api/Foods?id=${foodItem}`, function (data){
+                console.log(data);
+                console.log("this is my bullshit: ", data[0].name);
+
+                let tableInsert = `<tr>
+                <th scope="row">${i + 1}</th>
+                <td>${data[0].name}</td>
+                <td id="qty">${data[0].serving_size}</td>
+                ${qty}
+                <td>${data[0].kcal}</td>
+                
+              </tr>`
+                
+
+              $("#attach #tableBody").append(tableInsert);
+              
+            })
+           
+        })
+ 
+       
+    })
+})
 
 $("#attach").on("click", "#vegan", function () {
     console.log($("#vegan").data("clicked"));
@@ -133,7 +222,7 @@ const calcWeight = function () {
 
     const isMale = $("#male").data("click");
 
-    BMR = isMale ? 66 + (6.2 * weight) + (12.7 * height) - (6.76 * age) : 655.1 + (9.563 * weight) + (4.7 * height) - (4.7 * age)
+    BMR = isMale ? 66 + (6.2 * weight) + (12.7 * height) - (6.76 * age) : 655.1 + (4.35 * weight) + (4.7 * height) - (4.7 * age);
     TEE = pal * BMR;
 
 
@@ -157,6 +246,7 @@ const calcWeight = function () {
     if (BMI >= 18.5 & BMI <= 24.9) {
         $("#goal").css("display", "none");
         BMIresult = "you are just right";
+    
 
     }
 
@@ -295,20 +385,14 @@ const calcWeight = function () {
 
 
 
-//     if (TEE > dietPlan1){
-//         daysToGoal = ((poundsToGoal * 3500) / (TEE - dietPlan1));
-//         console.log("days to goal with diet plan1: ", daysToGoal);
-//     }
+//    
 
 //     if(TEE < dietPlan1 & TEE > dietPlan2) {
 //         daysToGoal = ((poundsToGoal * 3500) / (TEE - dietPlan2));
 //         console.log("days to goal with diet plan2: ", daysToGoal);
 //     }
 
-//     if (TEE < dietPlan2 & TEE > dietPlan3){
-//         daysToGoal = ((poundsToGoal * 3500) / (TEE - dietPlan3));
-//         console.log("days to goal with diet plan3: ", daysToGoal);
-//     }
+//     
 
 //     if (TEE < dietPlan3 & TEE > dietPlan4){
 //         daysToGoal = ((poundsToGoal * 3500) / (TEE - dietPlan4));
