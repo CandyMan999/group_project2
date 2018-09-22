@@ -7,3 +7,16 @@ body {
 .jumbotron {
     opacity: 0.95;
 }
+.icon:hover {
+    cursor: pointer;
+}
+
+#male {
+    color: red;
+}
+
+
+img {
+    height: 100px;
+    width: 100px;
+}

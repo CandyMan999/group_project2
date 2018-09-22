@@ -264,6 +264,10 @@ db.Plans.create({name: "Diet Plan 10",isVeg: true,isFree: true,maxKcal: 2500});
 db.Plans.create({name: "Diet Plan 11",isVeg: true,isFree: true,maxKcal: 2000});
 db.Plans.create({name: "Diet Plan 12",isVeg: true,isFree: true,maxKcal: 1500});
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3e2a56b4d6526737507449bfd51243709cae89bb
 db.Food_plans.create({PlanId: 1,FoodId: 25,qty: 2});
 db.Food_plans.create({PlanId: 1,FoodId: 29,qty: 1});
 db.Food_plans.create({PlanId: 1,FoodId: 20,qty: 2});
