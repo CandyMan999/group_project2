@@ -4,10 +4,35 @@
 
 #male {
     color: red;
+    font-size: 100px;
+    margin: 15px;
+}
+#female {
+    font-size: 100px;
+    margin: 15px;
 }
 
 
 img {
     height: 100px;
     width: 100px;
+}
+#logo {
+    width: 250px;
+}
+
+#vegan {
+    margin: 15px;
+}
+
+#gluten {
+    margin: 15px;
+}
+#attach {
+    margin: 5%;
+
+}
+
+body {
+    background-image: url("https://images.unsplash.com/photo-1490380169520-0a4b88d52565?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=bcf37734e59a40b36cd5ed71da95b206&auto=format&fit=crop&w=2850&q=80");
 }
