@@ -14,9 +14,30 @@ body {
 
 #male {
     color: red;
+    font-size: 100px;
+    margin: 15px;
+}
+#female {
+    font-size: 100px;
+    margin: 15px;
 }
 
 img {
     height: 100px;
     width: 100px;
+}
+#logo {
+    width: 250px;
+}
+
+#vegan {
+    margin: 15px;
+}
+
+#gluten {
+    margin: 15px;
+}
+#attach {
+    margin: 5%;
+
 }
