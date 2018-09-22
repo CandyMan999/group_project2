@@ -8,6 +8,10 @@ module.exports = function (app) {
     app.get("/", function (req, res) {
         res.render("index");
     })
+
+    
+
+   
     // GET route for getting all of the todos 
 
 
@@ -87,14 +91,23 @@ module.exports = function (app) {
     });
 
 
-    app.get('/api/Foods', function (req, res) {
-        console.log("this is my food item ", req.query)
+    app.get('/api/foods/:id', function (req, res) {
+        console.log("this is api route foods with id ", req.params.id)
 
         db.Foods.findAll({
             where: {
-                id: req.query.id
+                id: req.params.id
             }
         }).then(function (result) {
+            return res.json(result);
+
+        });
+    })
+
+    app.get('/api/foods', function (req, res) {
+        console.log("this is ap/foods route: ", req.query)
+
+        db.Foods.findAll({}).then(function (result) {
             return res.json(result);
 
         });

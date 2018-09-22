@@ -8,10 +8,100 @@ let poundsToGoal;
 let TEE;
 let quantity;
 let dietPlan;
+let x = 0;
 
 
 $("#logo").on('click', function () {
     location.reload();
+})
+
+
+$("#attach").on('click', "#createCustom", function(){
+    $("#attach").children().remove();
+    let queryString = `/api/foods`
+
+    $.get(queryString, function (data) {
+        
+        console.log("this new api work: ", data);
+        console.log("testing data length:  " + data.length + "\n");
+
+        console.log(data[0]);
+
+        let newDiet = `
+        <div id="activeLevel" class="dropdown text-center">
+            <h3 "text-center">Add a food to your diet plan</h3>
+            <div class="input-group mb-3">
+
+                <select id="newItem" class="custom-select" id="inputGroupSelect03" aria-label="Example select with button addon">
+                    <option selected>Choose...</option>
+                </select>
+            </div>
+        
+        </div>
+        <hr id="split" class="my-4">
+        <a id="update" class="btn btn-primary btn-lg" href="#" role="button">Update Plan</a>`
+
+        $("#attach").append(newDiet);
+        data.forEach(foodItem => {
+            let option = `<option class="option" value="${foodItem.id}">(${foodItem.name})   Serving Size: (${foodItem.serving_size})   kcal: (${foodItem.kcal})   Vegan: (${foodItem.isVeg})   Gluten-Free: (${foodItem.isFree})</option>`
+            $("#attach #newItem").append(option);
+        });
+        let table = `<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Food Item</th>
+        <th scope="col">Serving Size</th>
+        
+        <th scope="col">Kcal</th>
+      </tr>
+    </thead>
+    <tbody id="tableBody">
+      
+    </tbody>
+  </table>
+  <button id="customPlan" type="button" class="btn btn-primary btn-lg btn-block results">Save Your Plan!!</button>`
+  
+  $("#attach").append(table);
+
+    }) 
+
+    
+})
+
+$("#attach").on("click", "#update", function(){
+  
+
+  let id = $("#newItem").val()
+  console.log("this is my id: ", id);
+  let queryString = `/api/foods/`
+
+  $.get(queryString + id, function (data) {
+            console.log("this is my data: ", data)
+            
+            let tableInsert =   `<tr>
+            <th scope="row">${x += 1}</th>
+            <td id="name">${data[0].name}</td>
+            <td id="serving">${data[0].serving_size}</td>
+            <td id="kcal">${data[0].kcal}</td>
+        
+        </tr>`
+        
+        $("#attach #tableBody").append(tableInsert);
+       
+        // $.ajax("/api/burgers/" + id, {
+        //     type: "PUT",
+         
+        //   }).then(
+        //     function() {
+              
+             
+        //     }
+        //   );
+  })
+
+  
+ 
 })
 
 $("#learnMore").on("click", function () {
@@ -66,6 +156,7 @@ const results = function () {
                             <p>Your daily caloric burn rate is: ${TEE}</p> 
                     
                         </div>
+                        <a id="createCustom" class="btn btn-primary btn-lg" href="#" role="button">Create Custom</a>
                         <h1 class="text-center results"><strong>Select your diet plan options </strong></h1>
                         <div class="text-center results">
                             <button type="button" id="vegan" data-clicked=0 class="btn btn-light btn-lg planIcons text-center"><img src="https://cdn1.iconfinder.com/data/icons/flat-green-organic-natural-badges/500/Vegan-2-512.png"></button>
