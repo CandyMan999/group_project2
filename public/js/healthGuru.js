@@ -4,10 +4,7 @@ let age;
 let pal;
 let BMI;
 let BMIresult;
-let totalPounds;
 let poundsToGoal;
-let idealPounds;
-let phraseThatPays;
 let TEE;
 let quantity;
 let dietPlan;
@@ -40,7 +37,13 @@ $("#learnMore").on("click", function () {
 })
 
 const results = function () {
+    const resultMes = !BMIresult ? 'You are just right!' : BMIresult === 1 ? 'You are overweight' : 'You are underweight'
+    const goalMessage = BMIresult ? 
+        `<div id="goal" class="row results">
+                                    
+        <p>You need to ${BMIresult === -1 ? 'gain' : 'lose'}: ${poundsToGoal} pounds to reach a healthy weight</p> 
 
+        </div>` : "";
     let resultsDiv =
         `
                     <h2 class="results">Your Results</h2>
@@ -52,16 +55,12 @@ const results = function () {
                             </div> 
                             <div class="col-sm-6">
                                 <ul>
-                                    <li>${BMIresult} </li> 
+                                    <li>${resultMes} </li> 
                                 </ul>
                             </div> 
                             
                         </div>
-                        <div id="goal" class="row results">
-                                
-                            <p>You need to ${phraseThatPays}: ${poundsToGoal} pounds to reach a healthy weight</p> 
-                    
-                        </div>
+                        ${goalMessage}
                         <div class="row results">
                                 
                             <p>Your daily caloric burn rate is: ${TEE}</p> 
@@ -76,10 +75,6 @@ const results = function () {
 
                         `
     $("#attach").append(resultsDiv);
-
-    if (BMI >= 18.5 & BMI <= 24.9) {
-        $("#goal").css("display", "none");
-    }
 
 }
 
@@ -125,25 +120,21 @@ $("#attach").on('click', '.picked', function(){
       
     </tbody>
   </table>`
-$("#attach").append(table)
+
+    $("#attach").append(table)
 
 
     console.log($(this).val());
     let id = $(this).val();
     dietPlan = $(this).data('cal');
 
-    if (TEE > dietPlan) {
-        let daysToGoal = ((poundsToGoal * 3500) / (TEE - dietPlan));
-        console.log("Days to reach target weight with this diet Plan: ", daysToGoal);
-        let goalPhrase = `<p class="phrase">Days to reach target weight with this diet Plan: ${parseInt(daysToGoal)}</p>`
-        $("#attach").prepend(goalPhrase);
-    } else {
-        let daysToGoal = ((poundsToGoal * 3500) / (dietPlan - TEE));
-        console.log("Days to reach target weight with this diet Plan: ", daysToGoal);
+    let daysToGoal = ((poundsToGoal * 3500) / (Math.abs(dietPlan - TEE)));
+    console.log("Days to reach target weight with this diet Plan: ", daysToGoal);
+    
+    if (BMIresult){
         let goalPhrase = `<p class="phrase">Days to reach target weight with this diet Plan: ${parseInt(daysToGoal)}</p>`
         $("#attach").prepend(goalPhrase);
     }
-
     
     console.log("this is the diet plan calories: ", dietPlan)
     let queryString = `/api/food_plans?id=${id}`
@@ -151,25 +142,20 @@ $("#attach").append(table)
     $.get(queryString, function (data){
         
         console.log("this new api work: ", data);
-        data.forEach((element, i) => {
-            quantity = element.qty
-            let qty = `<td>${quantity}</td>`
-            
-            console.log("this is my quantity: ", quantity);
-            console.log("this is inside the for loop: ", element.food_id)
-            let foodItem = element.food_id;
-            $.get(`/api/Foods?id=${foodItem}`, function (data){
+        data.forEach((plan, i) => {            
+            $.get(`/api/Foods?id=${plan.FoodId}`, function (data){
                 console.log(data);
                 console.log("this is my bullshit: ", data[0].name);
 
-                let tableInsert = `<tr>
-                <th scope="row">${i + 1}</th>
-                <td>${data[0].name}</td>
-                <td id="qty">${data[0].serving_size}</td>
-                ${qty}
-                <td>${data[0].kcal}</td>
-                
-              </tr>`
+                let tableInsert = `
+                    <tr>
+                        <th scope="row">${i + 1}</th>
+                        <td>${data[0].name}</td>
+                        <td id="qty">${data[0].serving_size}</td>
+                        <td>${plan.qty}</td>
+                        <td>${data[0].kcal}</td>
+                    </tr>
+                `
                 
 
               $("#attach #tableBody").append(tableInsert);
@@ -225,41 +211,45 @@ const calcWeight = function () {
     BMR = isMale ? 66 + (6.2 * weight) + (12.7 * height) - (6.76 * age) : 655.1 + (4.35 * weight) + (4.7 * height) - (4.7 * age);
     TEE = pal * BMR;
 
-
-    console.log(weight, height, age, pal)
-
     console.log("your resting calorie burn is: ", BMR);
     TEE = parseInt(pal * BMR);
     console.log("your daily caloric burn with your activity level is: ", TEE);
     BMI = (weight * 703) / Math.pow(height, 2);
     console.log("your BMI is : ", BMI);
 
-    if (BMI < 18.5) {
-        BMIresult = "you are underweight";
-        let varBMI = 18.5;
-        totalPounds = (BMI * Math.pow(height, 2)) / 703;
-        idealPounds = (varBMI * Math.pow(height, 2)) / 703;
-        poundsToGoal = Math.round(idealPounds - totalPounds);
-        phraseThatPays = "gain";
-    }
-
-    if (BMI >= 18.5 & BMI <= 24.9) {
-        $("#goal").css("display", "none");
-        BMIresult = "you are just right";
     
 
-    }
+    // if (BMI < 18.5) {
+    //     BMIresult = "you are underweight";
+    //     let varBMI = 18.5;
+    //     totalPounds = (BMI * Math.pow(height, 2)) / 703;
+    //     idealPounds = (varBMI * Math.pow(height, 2)) / 703;
+    //     poundsToGoal = Math.round(idealPounds - totalPounds);
+    //     phraseThatPays = "gain";
+        
+    // }
 
-    if (BMI > 24.9) {
-        let varBMI = 24.9;
-        BMIresult = "you are overweight";
-        totalPounds = (BMI * Math.pow(height, 2)) / 703;
-        idealPounds = (varBMI * Math.pow(height, 2)) / 703;
-        poundsToGoal = Math.round(totalPounds - idealPounds);
-        console.log("pounds to lose", poundsToGoal);
-        phraseThatPays = "lose";
-
+    if (BMI >= 18.5 & BMI <= 24.9) {
+        BMIresult = 0;
+       
+    } else {
+        BMIresult = BMI < 18.5 ? -1 : 1 
+        let varBMI = BMI < 18.5 ? 18.5 : 24.9
+        const totalPounds = (BMI * Math.pow(height, 2)) / 703;
+        const idealPounds = (varBMI * Math.pow(height, 2)) / 703;
+        poundsToGoal = Math.abs(Math.round(totalPounds - idealPounds))
     }
+    
+    // if (BMI > 24.9) {
+    //     let varBMI = 24.9;
+    //     BMIresult = "you are overweight";
+    //     totalPounds = (BMI * Math.pow(height, 2)) / 703;
+    //     idealPounds = (varBMI * Math.pow(height, 2)) / 703;
+    //     poundsToGoal = Math.round(totalPounds - idealPounds);
+    //     console.log("pounds to lose", poundsToGoal);
+    //     phraseThatPays = "lose";
+
+    // }
 }
 
 // Use this route $.get("/api/food_plans/" + ID, function (data) {

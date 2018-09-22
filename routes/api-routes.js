@@ -54,7 +54,7 @@ module.exports = function (app) {
         console.log(req.query.id)
         db.Food_plans.findAll({
             where: {
-                plan_id: req.query.id
+                PlanId: req.query.id
             }
         }).then(function (result) {
             return res.json(result);
