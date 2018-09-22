@@ -10,7 +10,7 @@ let quantity;
 let dietPlan;
 
 
-$("#logo").on('click', function(){
+$("#logo").on('click', function () {
     location.reload();
 })
 
@@ -38,7 +38,7 @@ $("#learnMore").on("click", function () {
 
 const results = function () {
     const resultMes = !BMIresult ? 'You are just right!' : BMIresult === 1 ? 'You are overweight' : 'You are underweight'
-    const goalMessage = BMIresult ? 
+    const goalMessage = BMIresult ?
         `<div id="goal" class="row results">
                                     
         <p>You need to ${BMIresult === -1 ? 'gain' : 'lose'}: ${poundsToGoal} pounds to reach a healthy weight</p> 
@@ -79,7 +79,7 @@ const results = function () {
 }
 
 $("#attach").on("click", "#customPlan", function () {
-   
+
 
     let isVeg = $("#vegan").data("clicked");
     let isFree = $("#gluten").data("clicked");
@@ -92,21 +92,21 @@ $("#attach").on("click", "#customPlan", function () {
         $(".results").detach();
         console.log("my api worked", data);
         data.forEach(element => {
-        let selecetPlan = 
-        `<button type="button" value="${element.id}" data-cal="${element.maxKcal}" class="btn btn-primary btn-lg picked"> ${element.name} calories: ${element.maxKcal}</button>`
-        
-        $("#attach").append(selecetPlan);
+            let selecetPlan =
+                `<button type="button" value="${element.id}" data-cal="${element.maxKcal}" class="btn btn-primary btn-lg picked"> ${element.name} calories: ${element.maxKcal}</button>`
+
+            $("#attach").append(selecetPlan);
         });
-        
+
 
     })
 })
 
-$("#attach").on('click', '.picked', function(){
+$("#attach").on('click', '.picked', function () {
     $(".table").remove();
     $(".phrase").remove();
-  
-    let table =  `<table class="table">
+
+    let table = `<table class="table">
     <thead>
       <tr>
         <th scope="col">#</th>
@@ -130,41 +130,78 @@ $("#attach").on('click', '.picked', function(){
 
     let daysToGoal = ((poundsToGoal * 3500) / (Math.abs(dietPlan - TEE)));
     console.log("Days to reach target weight with this diet Plan: ", daysToGoal);
-    
-    if (BMIresult){
+
+    if (BMIresult) {
         let goalPhrase = `<p class="phrase">Days to reach target weight with this diet Plan: ${parseInt(daysToGoal)}</p>`
         $("#attach").prepend(goalPhrase);
     }
-    
+
     console.log("this is the diet plan calories: ", dietPlan)
     let queryString = `/api/food_plans?id=${id}`
-    
-    $.get(queryString, function (data){
-        
+
+    $.get(queryString, function (data) {
+
         console.log("this new api work: ", data);
-        data.forEach((plan, i) => {            
-            $.get(`/api/Foods?id=${plan.FoodId}`, function (data){
-                console.log(data);
-                console.log("this is my bullshit: ", data[0].name);
+        console.log("testing data length:  " + data.length + "\n");
 
-                let tableInsert = `
-                    <tr>
-                        <th scope="row">${i + 1}</th>
-                        <td>${data[0].name}</td>
-                        <td id="qty">${data[0].serving_size}</td>
-                        <td>${plan.qty}</td>
-                        <td>${data[0].kcal}</td>
-                    </tr>
-                `
-                
+        console.log(data[0]);
 
-              $("#attach #tableBody").append(tableInsert);
-              
-            })
-           
-        })
- 
-       
+        var Plan = data[0];
+
+        console.log("testing Plan.name:  " + Plan.name);
+        console.log("testing Plan.maxKcal:  " + Plan.maxKcal);
+        console.log("testing Plan.isFree:  " + Plan.isFree);
+        console.log("testing Plan.isVeg:  " + Plan.isVeg);
+
+        console.log("\n==================================");
+        console.log("Testing food array");
+
+        for (var x = 0; x < Plan.Foods.length; x++) {
+            console.log(Plan.Foods[x]);
+            console.log("testing Plan.Foods[" + x + "].name value:  " + Plan.Foods[x].name);
+            console.log("testing Plan.Foods[" + x + "].serving_size value:  " + Plan.Foods[x].serving_size);
+            console.log("testing Plan.Foods[" + x + "].kcal value:  " + Plan.Foods[x].kcal);
+
+            let tableInsert = `
+                        <tr>
+                            <th scope="row">${x + 1}</th>
+                            <td>${Plan.Foods[x].name}</td>
+                            <td id="qty">${Plan.Foods[x].serving_size}</td>
+                            <td>${Plan.Foods[x].Food_plans.qty}</td>
+                            <td>${Plan.Foods[x].kcal}</td>
+                        </tr>
+                        //         `
+
+
+            $("#attach #tableBody").append(tableInsert);
+
+        }
+        console.log("\n==================================\n");
+
+
+        // data.forEach((plan, i) => {            
+        //     $.get(`/ api / Foods ? id = ${ plan.FoodId }`, function (data){
+        //         console.log(data);
+        //         console.log("this is my bullshit: ", data[0].name);
+
+        //         let tableInsert = `
+        //             <tr>
+        //                 <th scope="row">${i + 1}</th>
+        //                 <td>${data[0].name}</td>
+        //                 <td id="qty">${data[0].serving_size}</td>
+        //                 <td>${plan.qty}</td>
+        //                 <td>${data[0].kcal}</td>
+        //             </tr>
+        //         `
+
+
+        //       $("#attach #tableBody").append(tableInsert);
+
+        //     })
+
+        // })
+
+
     })
 })
 
@@ -217,7 +254,7 @@ const calcWeight = function () {
     BMI = (weight * 703) / Math.pow(height, 2);
     console.log("your BMI is : ", BMI);
 
-    
+
 
     // if (BMI < 18.5) {
     //     BMIresult = "you are underweight";
@@ -226,20 +263,20 @@ const calcWeight = function () {
     //     idealPounds = (varBMI * Math.pow(height, 2)) / 703;
     //     poundsToGoal = Math.round(idealPounds - totalPounds);
     //     phraseThatPays = "gain";
-        
+
     // }
 
     if (BMI >= 18.5 & BMI <= 24.9) {
         BMIresult = 0;
-       
+
     } else {
-        BMIresult = BMI < 18.5 ? -1 : 1 
+        BMIresult = BMI < 18.5 ? -1 : 1
         let varBMI = BMI < 18.5 ? 18.5 : 24.9
         const totalPounds = (BMI * Math.pow(height, 2)) / 703;
         const idealPounds = (varBMI * Math.pow(height, 2)) / 703;
         poundsToGoal = Math.abs(Math.round(totalPounds - idealPounds))
     }
-    
+
     // if (BMI > 24.9) {
     //     let varBMI = 24.9;
     //     BMIresult = "you are overweight";
