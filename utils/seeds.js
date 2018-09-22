@@ -256,9 +256,14 @@ db.Plans.create({name: "Diet Plan 4",isVeg: false,isFree: true,maxKcal: 2500});
 db.Plans.create({name: "Diet Plan 5",isVeg: false,isFree: true,maxKcal: 2000});
 db.Plans.create({name: "Diet Plan 6",isVeg: false,isFree: true,maxKcal: 1500});
 
-db.Plans.create({name: "Diet Plan 7",isVeg: true,isFree: true,maxKcal: 2500});
-db.Plans.create({name: "Diet Plan 8",isVeg: true,isFree: true,maxKcal: 2000});
-db.Plans.create({name: "Diet Plan 9",isVeg: true,isFree: true,maxKcal: 1500});
+db.Plans.create({name: "Diet Plan 7",isVeg: true,isFree: false,maxKcal: 2500});
+db.Plans.create({name: "Diet Plan 8",isVeg: true,isFree: false,maxKcal: 2000});
+db.Plans.create({name: "Diet Plan 9",isVeg: true,isFree: false,maxKcal: 1500});
+
+db.Plans.create({name: "Diet Plan 10",isVeg: true,isFree: true,maxKcal: 2500});
+db.Plans.create({name: "Diet Plan 11",isVeg: true,isFree: true,maxKcal: 2000});
+db.Plans.create({name: "Diet Plan 12",isVeg: true,isFree: true,maxKcal: 1500});
+
 
 db.Food_plans.create({PlanId: 1,FoodId: 25,qty: 2});
 db.Food_plans.create({PlanId: 1,FoodId: 29,qty: 1});
@@ -289,12 +294,103 @@ db.Food_plans.create({PlanId: 3,FoodId:2,qty:1});
 db.Food_plans.create({PlanId: 3,FoodId:16,qty:1});
 db.Food_plans.create({PlanId: 3,FoodId:15,qty:1});
 
+db.Food_plans.create({PlanId: 4,FoodId:31,qty:2});
+db.Food_plans.create({PlanId: 4,FoodId:3,qty:3});
+db.Food_plans.create({PlanId: 4,FoodId:12,qty:2});
+db.Food_plans.create({PlanId: 4,FoodId:4,qty:2});
+db.Food_plans.create({PlanId: 4,FoodId:7,qty:2});
+db.Food_plans.create({PlanId: 4,FoodId:26,qty:2});
+db.Food_plans.create({PlanId: 4,FoodId:25,qty:1});
+db.Food_plans.create({PlanId: 4,FoodId:9,qty:1});
+db.Food_plans.create({PlanId: 4,FoodId:14,qty:2});
+db.Food_plans.create({PlanId: 4,FoodId:24,qty:1});
+db.Food_plans.create({PlanId: 4,FoodId:16,qty:1});
+db.Food_plans.create({PlanId: 4,FoodId:13,qty:1});
+
 db.Food_plans.create({PlanId: 5,FoodId:31,qty:2});
 db.Food_plans.create({PlanId: 5,FoodId:3,qty:3});
-db.Food_plans.create({PlanId: 5,FoodId:9,qty:2});
 db.Food_plans.create({PlanId: 5,FoodId:12,qty:2});
 db.Food_plans.create({PlanId: 5,FoodId:4,qty:2});
 db.Food_plans.create({PlanId: 5,FoodId:7,qty:2});
 db.Food_plans.create({PlanId: 5,FoodId:26,qty:2});
-db.Food_plans.create({PlanId: 5,FoodId:5,qty:2});
-db.Food_plans.create({PlanId: 5,FoodId:20,qty:1});
+db.Food_plans.create({PlanId: 5,FoodId:25,qty:1});
+db.Food_plans.create({PlanId: 5,FoodId:9,qty:1});
+db.Food_plans.create({PlanId: 5,FoodId:14,qty:1});
+
+db.Food_plans.create({PlanId: 6,FoodId:31,qty:2});
+db.Food_plans.create({PlanId: 6,FoodId:3,qty:3});
+db.Food_plans.create({PlanId: 6,FoodId:9,qty:1});
+db.Food_plans.create({PlanId: 6,FoodId:12,qty:1});
+db.Food_plans.create({PlanId: 6,FoodId:4,qty:2});
+db.Food_plans.create({PlanId: 6,FoodId:7,qty:1});
+db.Food_plans.create({PlanId: 6,FoodId:25,qty:1});
+db.Food_plans.create({PlanId: 6,FoodId:15,qty:3});
+
+db.Food_plans.create({PlanId: 7,FoodId:26,qty:3});
+db.Food_plans.create({PlanId: 7,FoodId:20,qty:3});
+db.Food_plans.create({PlanId: 7,FoodId:4,qty:1});
+db.Food_plans.create({PlanId: 7,FoodId:3,qty:2});
+db.Food_plans.create({PlanId: 7,FoodId:31,qty:3});
+db.Food_plans.create({PlanId: 7,FoodId:11,qty:1});
+db.Food_plans.create({PlanId: 7,FoodId:29,qty:2});
+db.Food_plans.create({PlanId: 7,FoodId:12,qty:2});
+db.Food_plans.create({PlanId: 7,FoodId:7,qty:2});
+db.Food_plans.create({PlanId: 7,FoodId:13,qty:2});
+
+db.Food_plans.create({PlanId: 8,FoodId:26,qty:2});
+db.Food_plans.create({PlanId: 8,FoodId:20,qty:2});
+db.Food_plans.create({PlanId: 8,FoodId:4,qty:1});
+db.Food_plans.create({PlanId: 8,FoodId:3,qty:2});
+db.Food_plans.create({PlanId: 8,FoodId:31,qty:2});
+db.Food_plans.create({PlanId: 8,FoodId:11,qty:1});
+db.Food_plans.create({PlanId: 8,FoodId:29,qty:2});
+db.Food_plans.create({PlanId: 8,FoodId:12,qty:2});
+db.Food_plans.create({PlanId: 8,FoodId:7,qty:2});
+db.Food_plans.create({PlanId: 8,FoodId:13,qty:1});
+
+db.Food_plans.create({PlanId: 9,FoodId:26,qty:1});
+db.Food_plans.create({PlanId: 9,FoodId:20,qty:1});
+db.Food_plans.create({PlanId: 9,FoodId:4,qty:1});
+db.Food_plans.create({PlanId: 9,FoodId:3,qty:2});
+db.Food_plans.create({PlanId: 9,FoodId:31,qty:1});
+db.Food_plans.create({PlanId: 9,FoodId:11,qty:2});
+db.Food_plans.create({PlanId: 9,FoodId:29,qty:2});
+db.Food_plans.create({PlanId: 9,FoodId:12,qty:1});
+db.Food_plans.create({PlanId: 9,FoodId:7,qty:2});
+db.Food_plans.create({PlanId: 9,FoodId:13,qty:2});
+
+db.Food_plans.create({PlanId: 10,FoodId:26,qty:3});
+db.Food_plans.create({PlanId: 10,FoodId:4,qty:3});
+db.Food_plans.create({PlanId: 10,FoodId:3,qty:3});
+db.Food_plans.create({PlanId: 10,FoodId:31,qty:3});
+db.Food_plans.create({PlanId: 10,FoodId:11,qty:2});
+db.Food_plans.create({PlanId: 10,FoodId:29,qty:3});
+db.Food_plans.create({PlanId: 10,FoodId:12,qty:1});
+db.Food_plans.create({PlanId: 10,FoodId:7,qty:2});
+db.Food_plans.create({PlanId: 10,FoodId:13,qty:3});
+db.Food_plans.create({PlanId: 10,FoodId:9,qty:1});
+db.Food_plans.create({PlanId: 10,FoodId:6,qty:1});
+
+db.Food_plans.create({PlanId: 11,FoodId:26,qty:2});
+db.Food_plans.create({PlanId: 11,FoodId:4,qty:2});
+db.Food_plans.create({PlanId: 11,FoodId:3,qty:2});
+db.Food_plans.create({PlanId: 11,FoodId:31,qty:2});
+db.Food_plans.create({PlanId: 11,FoodId:11,qty:2});
+db.Food_plans.create({PlanId: 11,FoodId:29,qty:2});
+db.Food_plans.create({PlanId: 11,FoodId:12,qty:1});
+db.Food_plans.create({PlanId: 11,FoodId:7,qty:2});
+db.Food_plans.create({PlanId: 11,FoodId:13,qty:3});
+db.Food_plans.create({PlanId: 11,FoodId:9,qty:3});
+db.Food_plans.create({PlanId: 11,FoodId:6,qty:2});
+
+db.Food_plans.create({PlanId: 12,FoodId:26,qty:1});
+db.Food_plans.create({PlanId: 12,FoodId:4,qty:2});
+db.Food_plans.create({PlanId: 12,FoodId:3,qty:2});
+db.Food_plans.create({PlanId: 12,FoodId:31,qty:1});
+db.Food_plans.create({PlanId: 12,FoodId:11,qty:2});
+db.Food_plans.create({PlanId: 12,FoodId:29,qty:1});
+db.Food_plans.create({PlanId: 12,FoodId:12,qty:1});
+db.Food_plans.create({PlanId: 12,FoodId:7,qty:2});
+db.Food_plans.create({PlanId: 12,FoodId:13,qty:3});
+db.Food_plans.create({PlanId: 12,FoodId:9,qty:3});
+db.Food_plans.create({PlanId: 12,FoodId:6,qty:1});
