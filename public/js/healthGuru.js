@@ -60,7 +60,13 @@ $("#attach").on('click', "#createCustom", function(){
       
     </tbody>
   </table>
-  <button id="customPlan" type="button" class="btn btn-primary btn-lg btn-block results">Save Your Plan!!</button>`
+  <div class="input-group">
+  <input type="text" class="form-control" placeholder="Enter a Name for Your Plan" aria-label="Enter a Name for Your Plan" aria-describedby="button-addon4">
+  <div class="input-group-append" id="button-addon4">
+    <button class="btn btn-outline-secondary" type="button">Save Your Plan</button>
+    
+  </div>
+</div>`
   
   $("#attach").append(table);
 
@@ -75,7 +81,7 @@ $("#attach").on("click", "#update", function(){
   let id = $("#newItem").val()
   console.log("this is my id: ", id);
   let queryString = `/api/foods/`
-
+ 
   $.get(queryString + id, function (data) {
             console.log("this is my data: ", data)
             
@@ -83,12 +89,27 @@ $("#attach").on("click", "#update", function(){
             <th scope="row">${x += 1}</th>
             <td id="name">${data[0].name}</td>
             <td id="serving">${data[0].serving_size}</td>
-            <td id="kcal">${data[0].kcal}</td>
+            <td data-cal="${data[0].kcal}" class="kcal">${data[0].kcal}</td>
         
         </tr>`
         
         $("#attach #tableBody").append(tableInsert);
        
+        let sumKcal = 0;
+        $('.kcal').each(function(){
+            sumKcal += $(this).data('cal');
+        });
+          console.log("this is my kcal: " , sumKcal);
+        
+          let daysToGoal = ((poundsToGoal * 3500) / (Math.abs(sumKcal - TEE)));
+          console.log("Days to reach target weight with this diet Plan: ", daysToGoal);
+        
+             let planCalories = `<p id="planCalories" class="phrase">Your Custom diet-plan has a total Calorie Count of: ${sumKcal}</p>`
+             let goalPhrase = `<p id="goalPhrase" class="phrase">Days to reach target weight with this diet Plan: ${parseInt(daysToGoal)}</p>`
+              $("#planCalories").remove();
+              $("#goalPhrase").remove();
+              $("#attach").prepend(goalPhrase).prepend(planCalories);
+      
         // $.ajax("/api/burgers/" + id, {
         //     type: "PUT",
          
@@ -99,7 +120,8 @@ $("#attach").on("click", "#update", function(){
         //     }
         //   );
   })
-
+ 
+  
   
  
 })
