@@ -10,7 +10,7 @@ let quantity;
 let dietPlan;
 let x = 0;
 let itemsPicked = [];
-let updateAmount;
+
 
 
 $("#logo").on('click', function () {
@@ -60,6 +60,9 @@ $("#attach").on('click', "#createCustom", function(){
                         <th scope="col">Serving Size</th>
                         <th scope="col">Kcal</th>
                         <th scope="col">Quantity</th>
+                        <th scope="col">Vegan</th>
+                        <th scope="col">Gluten-Free</th>
+                        <th scope="col">Remove</th>
                     </tr>
                     </thead>
                     <tbody id="tableBody">
@@ -67,9 +70,9 @@ $("#attach").on('click', "#createCustom", function(){
                         </tbody>
                     </table>
                     <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Enter a Name for Your Plan" aria-label="Enter a Name for Your Plan" aria-describedby="button-addon4">
+                    <input id="planName" type="text" class="form-control" placeholder="Enter a Name for Your Plan" aria-label="Enter a Name for Your Plan" aria-describedby="button-addon4">
                     <div class="input-group-append" id="button-addon4">
-                        <button class="btn btn-outline-secondary" type="button">Save Your Plan</button>
+                        <button id="save" class="btn btn-outline-secondary" type="button">Save Your Plan</button>
                         
                     </div>
                     </div>`
@@ -77,7 +80,7 @@ $("#attach").on('click', "#createCustom", function(){
         $("#attach").append(table);
     })    
 })
-let amount = 1;
+
 $("#attach").on("click", "#update", function(){
   let id = $("#newItem").val()
   console.log("this is my id: ", id);
@@ -89,78 +92,96 @@ $("#attach").on("click", "#update", function(){
            itemsPicked.push(data[0].id);
            console.log("this is my itemsPicked array: ", itemsPicked)
 
-            let tableInsert =   `<tr class="newRow">
+            let tableInsert =   `<tr id="${data[0].id}row" class="newRow">
             <th scope="row">${x += 1}</th>
-            <td value="${amount} id="name">${data[0].name}</td>
+            <td  id="name">${data[0].name}</td>
             <td id="serving">${data[0].serving_size}</td>
             <td data-cal="${data[0].kcal }" id="${data[0].id}kcal" class="kcal">${data[0].kcal}</td>
-            <td value="${amount}" id="${data[0].id}">${amount}</td>
+            <td class="quantity" id="${data[0].id}">1</td>
+            <td value="${data[0].isVeg}" id="${data[0].id}veg">${data[0].isVeg}</td>
+            <td value="${data[0].isFree}" id="${data[0].id}free">${data[0].isFree}</td>
+            
+            <td id="${data[0].id}remove"><button type="button" class="btn remove btn-danger">Remove Item</button></td>
             </tr>`
             
             $("#attach #tableBody").append(tableInsert);
         } else {
             console.log("this is the id im looking for: ", id)
             $(".newRow").each(function() {
-                updateAmount = parseInt( $(this).find(`#${id}`).text() );
-                updateAmount += parseInt(amount)
-                console.log(`new amount `, updateAmount)
-                $(this).find(`#${id}`).html(updateAmount);
+               let  updateAmount = parseInt( $(this).find(`#${id}`).text() );
+                updateAmount++
 
-                let updatekcal = parseInt( $(this).find(`#${id}kcal`).data('cal') );
-                
-                console.log("this is the new kcal: ", updatekcal);
-                $(this).find(`#${id}kcal`).html(updatekcal * updateAmount);
+                if (updateAmount){
+                    console.log(`new amount `, updateAmount)
+                    $(this).find(`#${id}`).html(updateAmount);
+    
+                    let updatekcal = parseInt( $(this).find(`#${id}kcal`).data('cal') );
+                    
+                    console.log("this is the new kcal: ", $(this).find(`#${id}kcal`).data('cal'));
+                    $(this).find(`#${id}kcal`).html(updatekcal * updateAmount);
+                }
+              
             })
             
         }
+
         
    
-       if (updateAmount){
+    
         let sumKcal = 0;
-        $('.kcal').each(function(){
-            sumKcal += $(this).data('cal') * updateAmount;
+        $('.newRow').each(function(){
+            sumKcal += Number($(this).find(".kcal").data('cal')) * Number($(this).find(".quantity").text());
         });
         console.log("this is my kcal: " , sumKcal);
         
         let daysToGoal = ((poundsToGoal * 3500) / (Math.abs(sumKcal - TEE)));
         console.log("Days to reach target weight with this diet Plan: ", daysToGoal);
     
-        let planCalories = `<p id="planCalories" class="phrase">Your Custom diet-plan has a total Calorie Count of: ${sumKcal}</p>`
+        let planCalories = `<p id="planCalories" class="phrase">Your Custom diet-plan has a total Calorie Count of: <span id="calories">${sumKcal}</span></p>`
         let goalPhrase = `<p id="goalPhrase" class="phrase">Days to reach target weight with this diet Plan: ${parseInt(daysToGoal)}</p>`
         $("#planCalories").remove();
         $("#goalPhrase").remove();
         $("#attach").prepend(goalPhrase).prepend(planCalories);
-    } else {
-        let sumKcal = 0;
-        $('.kcal').each(function(){
-            sumKcal += $(this).data('cal');
-        });
-        console.log("this is my kcal: " , sumKcal);
+   
+   
+        $(".newRow").each(function() {
+            $(this).find(`#${data[0].id}remove`).on("click", function(){
+                $(`#${data[0].id}row`).remove();
+            })
         
-        let daysToGoal = ((poundsToGoal * 3500) / (Math.abs(sumKcal - TEE)));
-        console.log("Days to reach target weight with this diet Plan: ", daysToGoal);
-    
-        let planCalories = `<p id="planCalories" class="phrase">Your Custom diet-plan has a total Calorie Count of: ${sumKcal}</p>`
-        let goalPhrase = `<p id="goalPhrase" class="phrase">Days to reach target weight with this diet Plan: ${parseInt(daysToGoal)}</p>`
-        $("#planCalories").remove();
-        $("#goalPhrase").remove();
-        $("#attach").prepend(goalPhrase).prepend(planCalories);
 
-    }
 
-    
-      
-        // $.ajax("/api/burgers/" + id, {
-        //     type: "PUT",
-         
-        //   }).then()
-        //     function() {
-              
-             
-        //     }
-        //   );
+    })
+  
   })
 })
+
+$("#attach").on('click', '#save', function(){
+     
+    let data = {
+            "name": $("#attach div #planName").val(),
+            "isVeg": false,
+            "isFree": false,
+            "maxKcal": Number($("#attach #calories").text()),
+            "Food_plans": [
+                {
+                    "FoodId": 1,
+                    "qty": 1
+                },
+                {
+                    "FoodId": 2,
+                    "qty": 4
+                }
+                ]
+        
+        }
+        $.post('/api/plans', data, function(err, res){
+            console.log("post: ", err, res)
+        })
+}) 
+
+
+
 
 $("#learnMore").on("click", function () {
 
@@ -431,32 +452,69 @@ $("#buttonID4").click(function () {
 
 $("#oldVegan").on('click', function(){
     let html = `<div class="video text-center"> 
-                    <iframe width="420" height="315"
+                    <iframe width="840" height="630"
                     src="https://www.youtube.com/embed/FX58PyQwrcI" frameborder="0" allow="autoplay; encrypted-media">
                     </iframe>
                 </div>`
     $("#attach").children().remove();
     $("#attach").append(html);
+    $("#attach").css("opacity", "1");
 })
 
 $("#strongMan").on('click', function(){
     let html = `<div class="video text-center"> 
-                    <iframe width="420" height="315"
+                    <iframe width="840" height="630"
                     src="https://www.youtube.com/embed/dR1FCJS8DoM" frameborder="0" allow="autoplay; encrypted-media">
                     </iframe>
                 </div>`
     $("#attach").children().remove();
     $("#attach").append(html);
+    $("#attach").css("opacity", "1");
 })
 
 $("#foodPrep").on('click', function(){
     let html = `<div class="video text-center"> 
-                    <iframe width="420" height="315"
+                    <iframe width="840" height="630"
                     src="https://www.youtube.com/embed/YM14WjIJtRA" frameborder="0" allow="autoplay; encrypted-media">
                     </iframe>
                 </div>`
     $("#attach").children().remove();
     $("#attach").append(html);
+    $("#attach").css("opacity", "1");
 })
 
+$("#activity").on('click', function(){
+    let html = `<div class="row"> 
+                    <div class="col-md-12 text-center">
+                        <img id="chart" src="https://i.pinimg.com/originals/37/17/42/37174213655bec8ccffa03090bfb7908.png" >
+                    </div>
+                </div>`
+    $("#attach").children().remove();
+    $("#attach").append(html);
+    $("#attach").css("opacity", "1");
+})
+
+$("#guru").on('click', function(){
+    let html = `<div class="row"> 
+                    <div class="col-sm-6 text-center">
+                        <img id="photo" src="http://fitgujjus.com/wp-content/uploads/2018/05/Yoga-Benefits.png" >
+                    </div>
+                    <div class="col-sm-6 text-center">
+                        <img id="photo" src="https://manjilas.files.wordpress.com/2013/04/eat.jpg" >
+                    </div>
+                </div>
+                <br>
+                <div class="row"> 
+                    <div class="col-sm-6 text-center">
+                        <img id="photo" src="https://i.pinimg.com/originals/cf/8c/22/cf8c2226e73b9ad1e6d0ee4303501997.jpg" >
+                    </div>
+                    <div class="col-sm-6 text-center">
+                        <img id="photo" src="https://image.slidesharecdn.com/glutenintoleranceandrheumaticdiseases-111121200903-phpapp02/95/gluten-intolerance-and-rheumatic-diseases-12-728.jpg" >
+                    </div>
+                </div>
+                `
+    $("#attach").children().remove();
+    $("#attach").append(html);
+    $("#attach").css("opacity", "1");
+})
 

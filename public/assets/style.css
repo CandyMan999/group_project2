@@ -42,3 +42,22 @@ img {
     margin: 5%;
 
 }
+
+#chart {
+    height: 700px;
+    width: 800px;
+}
+
+#photo {
+    height: 600px;
+    width: 600px;
+}
+#gender {
+    font-family: 'Rancho', serif;
+    font-size: 60px;
+}
+
+.style {
+    font-family: 'Rancho', serif;
+    font-size: 60px;
+}

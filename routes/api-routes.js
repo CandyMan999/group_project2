@@ -112,6 +112,28 @@ module.exports = function (app) {
 
         });
     })
+
+    app.post("/api/plans", function (req, res) {
+            // Take the request...
+            console.log(req.body);
+            const {
+                name,
+                isVeg,
+                isFree,
+                maxKcal
+            } = req.body
+    
+            // Then send it to the ORM to "save" into the DB.
+            db.Plans.create(
+              req.body,
+              {
+                  include: [ db.Food_plans ]
+              }
+            ).then(function (data) {
+                return res.json(data);
+            })
+        });
+
     // app.get("/api/food_plans/:TEE", function (req, res) {
 
     //     var TEE = req.params.TEE;
