@@ -12,6 +12,7 @@ let x = 0;
 let itemsPicked = [];
 let foodQty = [];
 
+$.backstretch("https://images.unsplash.com/photo-1494390248081-4e521a5940db?ixlib=rb-0.3.5&ixid=eyJhcHBfaWQiOjEyMDd9&s=73a27b0f1231b46fad892c62f220b9d8&auto=format&fit=crop&w=1295&q=80");
 
 $("#logo").on('click', function () {
     location.reload();
