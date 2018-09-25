@@ -5,5 +5,10 @@ module.exports = function(sequelize, DataTypes) {
       isFree: DataTypes.BOOLEAN,
       maxKcal: DataTypes.INTEGER
     });
+
+    Plans.associate = function (models) {
+      models.Plans.hasMany(models.Food_plans);
+      
+  };
     return Plans;
 };
