@@ -9,9 +9,9 @@ module.exports = function (app) {
         res.render("index");
     })
 
-    
 
-   
+
+
     // GET route for getting all of the todos 
 
 
@@ -113,17 +113,26 @@ module.exports = function (app) {
         });
     })
 
+    app.post("/api/plans", function (req, res) {
+        // Take the request...
+        console.log(req.body);
+        const {
+            name,
+            isVeg,
+            isFree,
+            maxKcal
+        } = req.body
 
-    app.get('/api/maxid/', function (req, res) {
-        console.log("route to find max plan");
-
-        db.Plans.findAll({}).then(function (result) {
-            return res.json(result);
-
-        });
-    })
-
-
+        // Then send it to the ORM to "save" into the DB.
+        db.Plans.create(
+            req.body,
+            {
+                include: [db.Food_plans]
+            }
+        ).then(function (data) {
+            return res.json(data);
+        })
+    });
 
     // app.get("/api/food_plans/:TEE", function (req, res) {
 
@@ -207,26 +216,26 @@ module.exports = function (app) {
     app.post("/api/plans/new", function (req, res) {
         // Take the request...     
         console.log("\nPost Route hit");
-        
+
         console.log("new plan data received:");
         console.log(req.body);
         console.log("testing individual values");
         console.log("req.body.name: " + req.body.name);
         console.log("req.body.isVeg: " + req.body.isVeg);
         console.log("req.body.isFree: " + req.body.isFree);
-        console.log("req.body.maxKcal: "  + req.body.maxKcal);
+        console.log("req.body.maxKcal: " + req.body.maxKcal);
 
         db.Plans.create({
             name: req.body.name,
             isVeg: req.body.isVeg,
             isFree: req.body.isFree,
             maxKcal: req.body.maxKcal
-          }).then(function(results) {
+        }).then(function (results) {
             console.log("New plan added to Plans table");
-            console.log("results: " );
+            console.log("results: ");
             console.log(results);
             res.end();
-          });
+        });
 
         // Then send it to the ORM to "save" into the DB.
         // db.Food_plans.create({

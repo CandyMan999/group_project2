@@ -10,8 +10,6 @@ let quantity;
 let dietPlan;
 let x = 0;
 let itemsPicked = [];
-let updateAmount;
-let globalCalorieCounter = 0;
 let foodQty = [];
 
 
@@ -72,9 +70,9 @@ $("#attach").on('click', "#createCustom", function () {
                         </tbody>
                     </table>
                     <div class="input-group">
-                    <input type="text" class="form-control" id="customPlanName" placeholder="Enter a Name for Your Plan" aria-label="Enter a Name for Your Plan" aria-describedby="button-addon4">
+                    <input id="planName" type="text" class="form-control" placeholder="Enter a Name for Your Plan" aria-label="Enter a Name for Your Plan" aria-describedby="button-addon4">
                     <div class="input-group-append" id="button-addon4">
-                        <button class="btn btn-outline-secondary" id="savePlan" type="button">Save Your Plan</button>
+                        <button id="save" class="btn btn-outline-secondary" type="button">Save Your Plan</button>
                         
                     </div>
                     </div>`
@@ -82,7 +80,7 @@ $("#attach").on('click', "#createCustom", function () {
         $("#attach").append(table);
     })
 })
-let amount = 1;
+
 $("#attach").on("click", "#update", function () {
     let id = $("#newItem").val()
     console.log("this is my id: ", id);
@@ -96,68 +94,52 @@ $("#attach").on("click", "#update", function () {
 
             let tableInsert = `<tr id="${data[0].id}row" class="newRow">
             <th scope="row">${x += 1}</th>
-            <td value="${amount} id="name">${data[0].name}</td>
+            <td  id="name">${data[0].name}</td>
             <td id="serving">${data[0].serving_size}</td>
             <td data-cal="${data[0].kcal}" id="${data[0].id}kcal" class="kcal">${data[0].kcal}</td>
-            <td value="${amount}" id="${data[0].id}">${amount}</td>
+            <td class="quantity" id="${data[0].id}">1</td>
             <td value="${data[0].isVeg}" id="${data[0].id}veg">${data[0].isVeg}</td>
             <td value="${data[0].isFree}" id="${data[0].id}free">${data[0].isFree}</td>
-            <td value="${amount}" id="${data[0].id}">${amount}</td>
-            <td value="${amount}" id="${data[0].id}remove"><button type="button" class="btn remove btn-danger">Remove Item</button></td>
+            
+            <td id="${data[0].id}remove"><button type="button" class="btn remove btn-danger">Remove Item</button></td>
             </tr>`
 
             $("#attach #tableBody").append(tableInsert);
         } else {
             console.log("this is the id im looking for: ", id)
             $(".newRow").each(function () {
-                updateAmount = parseInt($(this).find(`#${id}`).text());
-                updateAmount += parseInt(amount)
-                console.log(`new amount `, updateAmount)
-                $(this).find(`#${id}`).html(updateAmount);
+                let updateAmount = parseInt($(this).find(`#${id}`).text());
+                updateAmount++
 
-                let updatekcal = parseInt($(this).find(`#${id}kcal`).data('cal'));
+                if (updateAmount) {
+                    console.log(`new amount `, updateAmount)
+                    $(this).find(`#${id}`).html(updateAmount);
 
-                console.log("this is the new kcal: ", updatekcal);
-                $(this).find(`#${id}kcal`).html(updatekcal * updateAmount);
+                    let updatekcal = parseInt($(this).find(`#${id}kcal`).data('cal'));
+
+                    console.log("this is the new kcal: ", $(this).find(`#${id}kcal`).data('cal'));
+                    $(this).find(`#${id}kcal`).html(updatekcal * updateAmount);
+                }
+
             })
 
         }
 
+        let sumKcal = 0;
+        $('.newRow').each(function () {
+            sumKcal += Number($(this).find(".kcal").data('cal')) * Number($(this).find(".quantity").text());
+        });
+        console.log("this is my kcal: ", sumKcal);
 
-        if (updateAmount) {
-            let sumKcal = 0;
-            $('.kcal').each(function () {
-                sumKcal += $(this).data('cal') * updateAmount;
-            });
-            console.log("this is my kcal: ", sumKcal);
-            globalCalorieCounter = sumKcal;
+        let daysToGoal = ((poundsToGoal * 3500) / (Math.abs(sumKcal - TEE)));
+        console.log("Days to reach target weight with this diet Plan: ", daysToGoal);
 
-            let daysToGoal = ((poundsToGoal * 3500) / (Math.abs(sumKcal - TEE)));
-            console.log("Days to reach target weight with this diet Plan: ", daysToGoal);
+        let planCalories = `<p id="planCalories" class="phrase">Your Custom diet-plan has a total Calorie Count of: <span id="calories">${sumKcal}</span></p>`
+        let goalPhrase = `<p id="goalPhrase" class="phrase">Days to reach target weight with this diet Plan: ${parseInt(daysToGoal)}</p>`
+        $("#planCalories").remove();
+        $("#goalPhrase").remove();
+        $("#attach").prepend(goalPhrase).prepend(planCalories);
 
-            let planCalories = `<p id="planCalories" class="phrase">Your Custom diet-plan has a total Calorie Count of: ${sumKcal}</p>`
-            let goalPhrase = `<p id="goalPhrase" class="phrase">Days to reach target weight with this diet Plan: ${parseInt(daysToGoal)}</p>`
-            $("#planCalories").remove();
-            $("#goalPhrase").remove();
-            $("#attach").prepend(goalPhrase).prepend(planCalories);
-        } else {
-            let sumKcal = 0;
-            $('.kcal').each(function () {
-                sumKcal += $(this).data('cal');
-            });
-            console.log("this is my kcal: ", sumKcal);
-            globalCalorieCounter = sumKcal;
-
-            let daysToGoal = ((poundsToGoal * 3500) / (Math.abs(sumKcal - TEE)));
-            console.log("Days to reach target weight with this diet Plan: ", daysToGoal);
-
-            let planCalories = `<p id="planCalories" class="phrase">Your Custom diet-plan has a total Calorie Count of: ${sumKcal}</p>`
-            let goalPhrase = `<p id="goalPhrase" class="phrase">Days to reach target weight with this diet Plan: ${parseInt(daysToGoal)}</p>`
-            $("#planCalories").remove();
-            $("#goalPhrase").remove();
-            $("#attach").prepend(goalPhrase).prepend(planCalories);
-
-        }
 
         $(".newRow").each(function () {
             $(this).find(`#${data[0].id}remove`).on("click", function () {
@@ -225,10 +207,11 @@ $("#attach").on("click", "#update", function () {
 })
 
 // On-click function for the Save the Plan button during the custom food plan screen 
-$("#attach").on("click", "#savePlan", function () {
+$("#attach").on("click", "#save", function () {
     console.log("save plan button clicked");
 
-    var planName = $("#customPlanName").val().trim();
+    var planName = $("#planName").val().trim();
+    var maxCalories = Number($("#attach #calories").text());
 
     // counters to track how many food items in the custom plan table are vegan and/or glutenfree
     var veganCounter = 0;
@@ -241,10 +224,9 @@ $("#attach").on("click", "#savePlan", function () {
     var veganCheck;
     var gfCheck;
 
-    // var kCalCounter = 0;
-
 
     console.log("testing planName:  " + planName);
+    console.log("testing maxCalories:  " + maxCalories);
 
     console.log("testing final food items picked upon saving the food plan");
     console.log(itemsPicked)
@@ -263,17 +245,15 @@ $("#attach").on("click", "#savePlan", function () {
             glutenFree = $tds.eq(5).text();
 
 
-        // Don't push the first row which is the row containing the labels of the columns across the top
+        // Don't use the first row which is the row containing the labels of the columns across the top
         if (i != 0) {
             console.log("loop #" + i);
             console.log("Testing row#" + (i) + "[ foodName: " + foodName + ", servingSize: " + servingSize + ", kCal: " + kCal + ", quantity: " + quantity + ", Vegan?: " + vegan + ", Gluten-Free?: " + glutenFree + " ]");
-            
 
-            foodQty.push({FoodId: itemsPicked[i-1], qty: parseInt(quantity)});
+            foodQty.push({ FoodId: itemsPicked[i - 1], qty: parseInt(quantity) });
             console.log("testing foodQty array data");
             console.log(foodQty);
 
-            
             rowCounter++;
 
             // console.log ("Is " + foodName + " a vegan food item?  " + vegan);
@@ -286,10 +266,6 @@ $("#attach").on("click", "#savePlan", function () {
 
                 gfCounter++;
             }
-
-            // console.log("testing kCal(" + kCal + ") * quantity(" + quantity + ") = " + kCal * quantity);
-            // kCalCounter += (kCal * quantity);
-            // console.log("testing kCalCounter variable:  " + kCalCounter);
 
         }
     })
@@ -304,8 +280,7 @@ $("#attach").on("click", "#savePlan", function () {
     if (rowCounter > veganCounter) {
         veganCheck = false;
     }
-    else if (rowCounter === veganCounter)
-    {
+    else if (rowCounter === veganCounter) {
         veganCheck = true;
     }
 
@@ -314,8 +289,7 @@ $("#attach").on("click", "#savePlan", function () {
     if (rowCounter > gfCounter) {
         gfCheck = false;
     }
-    else if (rowCounter === gfCounter)
-    {
+    else if (rowCounter === gfCounter) {
         gfCheck = true;
     }
 
@@ -342,21 +316,52 @@ $("#attach").on("click", "#savePlan", function () {
         name: planName,
         isVeg: veganCheck,
         isFree: gfCheck,
-        maxKcal: globalCalorieCounter
+        maxKcal: maxCalories,
+        Food_plans: foodQty
     };
 
     console.log("testing newCustomPlan array data");
     console.log(newCustomPlan);
 
     console.log("\n sending to post route");
-    $.post("/api/plans/new", newCustomPlan)
-        // on success, run the following code
-        .then(function () {
-            console.log("sent to post route /api/plans");
-        });
 
+    $.post('/api/plans', newCustomPlan, function (err, res) {
+        console.log("post: ", err, res)
+    })
+    // $.post("/api/plans/new", newCustomPlan)
+    //     // on success, run the following code
+    //     .then(function () {
+    //         console.log("sent to post route /api/plans");
+    //     });
 
 });
+
+// $("#attach").on('click', '#save', function () {
+
+//     let data = {
+//         "name": $("#attach div #planName").val(),
+//         "isVeg": false,
+//         "isFree": false,
+//         "maxKcal": Number($("#attach #calories").text()),
+//         "Food_plans": [
+//             {
+//                 "FoodId": 1,
+//                 "qty": 1
+//             },
+//             {
+//                 "FoodId": 2,
+//                 "qty": 4
+//             }
+//         ]
+
+//     }
+//     $.post('/api/plans', data, function (err, res) {
+//         console.log("post: ", err, res)
+//     })
+// })
+
+
+
 
 $("#learnMore").on("click", function () {
 
@@ -628,32 +633,69 @@ const calcWeight = function () {
 
 $("#oldVegan").on('click', function () {
     let html = `<div class="video text-center"> 
-                    <iframe width="420" height="315"
+                    <iframe width="840" height="630"
                     src="https://www.youtube.com/embed/FX58PyQwrcI" frameborder="0" allow="autoplay; encrypted-media">
                     </iframe>
                 </div>`
     $("#attach").children().remove();
     $("#attach").append(html);
+    $("#attach").css("opacity", "1");
 })
 
 $("#strongMan").on('click', function () {
     let html = `<div class="video text-center"> 
-                    <iframe width="420" height="315"
+                    <iframe width="840" height="630"
                     src="https://www.youtube.com/embed/dR1FCJS8DoM" frameborder="0" allow="autoplay; encrypted-media">
                     </iframe>
                 </div>`
     $("#attach").children().remove();
     $("#attach").append(html);
+    $("#attach").css("opacity", "1");
 })
 
 $("#foodPrep").on('click', function () {
     let html = `<div class="video text-center"> 
-                    <iframe width="420" height="315"
+                    <iframe width="840" height="630"
                     src="https://www.youtube.com/embed/YM14WjIJtRA" frameborder="0" allow="autoplay; encrypted-media">
                     </iframe>
                 </div>`
     $("#attach").children().remove();
     $("#attach").append(html);
+    $("#attach").css("opacity", "1");
 })
 
+$("#activity").on('click', function () {
+    let html = `<div class="row"> 
+                    <div class="col-md-12 text-center">
+                        <img id="chart" src="https://i.pinimg.com/originals/37/17/42/37174213655bec8ccffa03090bfb7908.png" >
+                    </div>
+                </div>`
+    $("#attach").children().remove();
+    $("#attach").append(html);
+    $("#attach").css("opacity", "1");
+})
+
+$("#guru").on('click', function () {
+    let html = `<div class="row"> 
+                    <div class="col-sm-6 text-center">
+                        <img id="photo" src="http://fitgujjus.com/wp-content/uploads/2018/05/Yoga-Benefits.png" >
+                    </div>
+                    <div class="col-sm-6 text-center">
+                        <img id="photo" src="https://manjilas.files.wordpress.com/2013/04/eat.jpg" >
+                    </div>
+                </div>
+                <br>
+                <div class="row"> 
+                    <div class="col-sm-6 text-center">
+                        <img id="photo" src="https://i.pinimg.com/originals/cf/8c/22/cf8c2226e73b9ad1e6d0ee4303501997.jpg" >
+                    </div>
+                    <div class="col-sm-6 text-center">
+                        <img id="photo" src="https://image.slidesharecdn.com/glutenintoleranceandrheumaticdiseases-111121200903-phpapp02/95/gluten-intolerance-and-rheumatic-diseases-12-728.jpg" >
+                    </div>
+                </div>
+                `
+    $("#attach").children().remove();
+    $("#attach").append(html);
+    $("#attach").css("opacity", "1");
+})
 
