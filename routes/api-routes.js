@@ -9,9 +9,9 @@ module.exports = function (app) {
         res.render("index");
     })
 
-    
 
-   
+
+
     // GET route for getting all of the todos 
 
 
@@ -114,25 +114,25 @@ module.exports = function (app) {
     })
 
     app.post("/api/plans", function (req, res) {
-            // Take the request...
-            console.log(req.body);
-            const {
-                name,
-                isVeg,
-                isFree,
-                maxKcal
-            } = req.body
-    
-            // Then send it to the ORM to "save" into the DB.
-            db.Plans.create(
-              req.body,
-              {
-                  include: [ db.Food_plans ]
-              }
-            ).then(function (data) {
-                return res.json(data);
-            })
-        });
+        // Take the request...
+        console.log(req.body);
+        const {
+            name,
+            isVeg,
+            isFree,
+            maxKcal
+        } = req.body
+
+        // Then send it to the ORM to "save" into the DB.
+        db.Plans.create(
+            req.body,
+            {
+                include: [db.Food_plans]
+            }
+        ).then(function (data) {
+            return res.json(data);
+        })
+    });
 
     // app.get("/api/food_plans/:TEE", function (req, res) {
 
@@ -196,21 +196,56 @@ module.exports = function (app) {
 
 
 
-    // // POST route for saving a new todo. We can create todo with the data in req.body
-    // app.post("/api/food_plans", function (req, res) {
-    //     // Take the request...
-    //     console.log(req.body);
+    // POST route for saving a new todo. We can create todo with the data in req.body
+    app.post("/api/food_plans", function (req, res) {
+        // Take the request...
+        console.log(req.body);
 
 
-    //     // Then send it to the ORM to "save" into the DB.
-    //     db.Food_plans.create({
+        // Then send it to the ORM to "save" into the DB.
+        // db.Food_plans.create({
 
 
 
-    //     }).then(function (data) {
-    //         return res.json(data);
-    //     })
-    // });
+        // }).then(function (data) {
+        //     return res.json(data);
+        // })
+    });
+
+
+    app.post("/api/plans/new", function (req, res) {
+        // Take the request...     
+        console.log("\nPost Route hit");
+
+        console.log("new plan data received:");
+        console.log(req.body);
+        console.log("testing individual values");
+        console.log("req.body.name: " + req.body.name);
+        console.log("req.body.isVeg: " + req.body.isVeg);
+        console.log("req.body.isFree: " + req.body.isFree);
+        console.log("req.body.maxKcal: " + req.body.maxKcal);
+
+        db.Plans.create({
+            name: req.body.name,
+            isVeg: req.body.isVeg,
+            isFree: req.body.isFree,
+            maxKcal: req.body.maxKcal
+        }).then(function (results) {
+            console.log("New plan added to Plans table");
+            console.log("results: ");
+            console.log(results);
+            res.end();
+        });
+
+        // Then send it to the ORM to "save" into the DB.
+        // db.Food_plans.create({
+
+
+
+        // }).then(function (data) {
+        //     return res.json(data);
+        // })
+    });
 
     // // DELETE route for deleting todos. We can get the id of the todo to be deleted from
     // // req.params.id
