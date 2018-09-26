@@ -71,6 +71,7 @@ img {
     background-color: plum;
     color: limegreen;
     text-shadow: 2px 2px black;
+    margin-bottom: 20px;
 }
 
 #learnMore{
@@ -90,4 +91,24 @@ img {
 
 #customPlan {
     background-color: limegreen;
+}
+
+.picked {
+    margin-top: 10px;
+}
+
+#delete {
+    background-color: limegreen;
+}
+
+#update {
+    background-color: plum;
+    color: limegreen;
+    font-family: 'Rancho', serif;
+    font-size: 40px;
+    border: 4px solid limegreen;
+}
+
+#add {
+    color: limegreen;
 }

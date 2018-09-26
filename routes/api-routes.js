@@ -155,17 +155,23 @@ module.exports = function (app) {
         });
     });
 
-    // // DELETE route for deleting todos. We can get the id of the todo to be deleted from
-    // // req.params.id
-    // app.delete("/api/food_plans/:id", function (req, res) {
+    // DELETE route for deleting todos. We can get the id of the todo to be deleted from
+    // req.params.id
+    app.delete("/api/plans/:id", function (req, res) {
+        console.log("this is my delete info: ", req.params.id)
+        db.Plans.destroy({
+            where: {
+                id: req.params.id
+            }
+        }).then(function (results) {
+            console.log("Plan has been deleted");
+            console.log("results: ");
+            console.log(results);
+            res.json(results);
+        });
+    })
+   
 
-    // });
-
-    // // PUT route for updating todos. We can get the updated todo data from req.body
-    // app.put("/api/todos", function (req, res) {
-
-    // });
-    
     //post route for the new food item section
     app.post("/api/foods/new", function(req, res){
         console.log("\nPost Route Hit");
