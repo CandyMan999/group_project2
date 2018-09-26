@@ -257,4 +257,21 @@ module.exports = function (app) {
     // app.put("/api/todos", function (req, res) {
 
     // });
+    //post route for the new food item section
+    app.post("/api/foods/new", function(req, res){
+        console.log("\nPost Route Hit");
+        db.Foods.create({
+            name:req.body.name,
+            serving_size: req.body.serving_size,
+            kcal: req.body.kcal,
+            isVeg: req.body.isVeg,
+            isFree: req.body.isFree
+        }) .then(function (results) {
+            console.log("New food added to Foods table");
+            console.log("results: ");
+            console.log(results);
+            res.end();
+        });
+    })
+
 };
