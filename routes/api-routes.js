@@ -4,17 +4,11 @@ var db = require("../models");
 // Routes
 // =============================================================
 module.exports = function (app) {
-
+    //this renders the homePage 
     app.get("/", function (req, res) {
         res.render("index");
     })
-
-
-
-
-    // GET route for getting all of the todos 
-
-
+    //This is the get route to return all the diet Plans based on Calories and whether or not gluten free and vegan is true
     app.get('/api/Plans', function (req, res) {
 
         console.log("this is my api BMI : ", req.query.BMI)
@@ -54,6 +48,7 @@ module.exports = function (app) {
         });
     })
 
+
     app.get('/api/food_plans', function (req, res) {
         console.log("\nhitting get route /api/food_plans/?=" + req.query.id);
 
@@ -90,7 +85,7 @@ module.exports = function (app) {
         });
     });
 
-
+    //this grabs a specific food from the dataBase and sends it back to the front-end
     app.get('/api/foods/:id', function (req, res) {
         console.log("this is api route foods with id ", req.params.id)
 
@@ -103,7 +98,7 @@ module.exports = function (app) {
 
         });
     })
-
+    //this retreives all food data from the database
     app.get('/api/foods', function (req, res) {
         console.log("this is ap/foods route: ", req.query)
 
@@ -113,6 +108,7 @@ module.exports = function (app) {
         });
     })
 
+    //this post route puts an entire plan into the database
     app.post("/api/plans", function (req, res) {
         // Take the request...
         console.log(req.body);
@@ -133,85 +129,6 @@ module.exports = function (app) {
             return res.json(data);
         })
     });
-
-    // app.get("/api/food_plans/:TEE", function (req, res) {
-
-    //     var TEE = req.params.TEE;
-    //     console.log(TEE)
-
-    //     // sequelize query to find Food plans with totalKCal less than or equal to the TEE provided from front end
-    //     db.Food_plans.findAll({
-    //         where: {
-    //             totalKcal:  { $lte: TEE }
-    //         }
-    //     }).then(function (result) {
-    //         return res.json(result);
-    //     });
-    // });
-
-    // // sequelize query route that displays all food plans
-    // app.get("/api/food_plans", function (req, res, TEE) {
-    //     db.Food_plans.findAll({}).then(function (result) {
-    //         return res.json(result);
-    //     });
-    // });
-
-    // // example sequelize query route specifically for non-specific diet with a limit of 3500 calories
-    // // calculation is done in the javascript
-    // // this routes just finds all the food with no limiting factor and sends that data over
-    // app.get("/api/non_specific_3500cal", function (req, res) {
-    //     // db.Food_plans.findAll({}).then(function (result) {
-    //     //     return res.json(result);
-    //     // });
-    //     console.log("get /api/non_specific_3500cal called");
-
-    //     db.Foods.findAll({
-    //     }).then(function (results) {
-    //         console.log(results);
-
-    //         res.json(results);
-    //     });
-    // });
-
-
-    // // example sequelize query route specifically for a vegan diet with a limit of 2000 calories
-    // // calculation is done in the javascript
-    // // this routes just finds all the food limited by the isVeg=true condition and sends that data over
-    // app.get("/api/vegan_2000cal", function (req, res) {
-    //     // db.Food_plans.findAll({}).then(function (result) {
-    //     //     return res.json(result);
-    //     // });
-    //     console.log("get /api/vegann_2000cal called");
-
-    //     db.Foods.findAll({
-    //         where: {
-    //             isVeg: true
-    //         }
-    //     }).then(function (results) {
-    //         console.log(results);
-
-    //         res.json(results);
-    //     });
-    // });
-
-
-
-    // POST route for saving a new todo. We can create todo with the data in req.body
-    app.post("/api/food_plans", function (req, res) {
-        // Take the request...
-        console.log(req.body);
-
-
-        // Then send it to the ORM to "save" into the DB.
-        // db.Food_plans.create({
-
-
-
-        // }).then(function (data) {
-        //     return res.json(data);
-        // })
-    });
-
 
     app.post("/api/plans/new", function (req, res) {
         // Take the request...     
@@ -236,15 +153,6 @@ module.exports = function (app) {
             console.log(results);
             res.end();
         });
-
-        // Then send it to the ORM to "save" into the DB.
-        // db.Food_plans.create({
-
-
-
-        // }).then(function (data) {
-        //     return res.json(data);
-        // })
     });
 
     // // DELETE route for deleting todos. We can get the id of the todo to be deleted from
@@ -257,6 +165,7 @@ module.exports = function (app) {
     // app.put("/api/todos", function (req, res) {
 
     // });
+    
     //post route for the new food item section
     app.post("/api/foods/new", function(req, res){
         console.log("\nPost Route Hit");

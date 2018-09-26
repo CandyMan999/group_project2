@@ -72,3 +72,22 @@ img {
     color: limegreen;
     text-shadow: 2px 2px black;
 }
+
+#learnMore{
+    background-color: plum;
+    color: limegreen;
+    font-family: 'Rancho', serif;
+    font-size: 40px;
+    border: 4px solid limegreen;
+}
+.obvious{
+    color: limegreen;
+}
+
+#restrictions {
+    font-size: 50px;
+}
+
+#customPlan {
+    background-color: limegreen;
+}

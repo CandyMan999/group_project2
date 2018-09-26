@@ -459,35 +459,35 @@ const results = function () {
     const goalMessage = BMIresult ?
         `<div id="goal" class="row results">
         <div class="col-sm-12 text-center">                        
-        <h2 class="text-center" >You need to ${BMIresult === -1 ? 'gain' : 'lose'}: ${poundsToGoal} pounds to reach a healthy weight</h2> 
+        <h2 class="text-center font-effect-shadow-multiple style" >You need to <span class="obvious"> ${BMIresult === -1 ? 'GAIN' : 'LOSE'}</span>: <span class="obvious">${poundsToGoal}</span> pounds to reach a healthy weight</h2> 
         </div>
         </div>` : "";
     let resultsDiv =
         `
-                    <h1 class="results text-center">Results: ${resultMes}</h1>
+                    <h1 class="results text-center font-effect-shadow-multiple style">Results:<span class="obvious">${resultMes}</span></h1>
                         ${goalMessage}
-                        <div class="row results">
-                            <div class="col-sm-12">
+                        <div class="row results tex-center">
+                            <div class="col-sm-12 text-center">
                                 <ul>
-                                    <li> your BMI is ${BMI.toFixed(2)} </li> 
+                                    <li class="font-effect-shadow-multiple style"> Your BMI is: <span class="obvious">${BMI.toFixed(2)}</span> </li> 
                                 </ul>
                             </div> 
                       
-                            <div class="col-sm-12">
+                            <div class="col-sm-12 text-center">
                                 <ul>
-                                    <li>Your daily caloric burn rate is: ${TEE}</li> 
+                                    <li class="font-effect-shadow-multiple style">Your daily caloric burn rate is: <span class="obvious">${TEE}</span></li> 
                                 </ul>
                             </div> 
                             
                         </div>
-                        
+                        <hr class="my-4">
                         <button id="createCustom" class="btn btn-primary btn-lg" href="#" role="button">Create Custom</button>
-                        <h1 class="text-center results"><strong>Select your diet plan options </strong></h1>
+                        <h1 id="restrictions" class="text-center  results font-effect-shadow-multiple"><strong>Optional Restrictions</strong></h1>
                         <div class="text-center results">
                             <button type="button" id="vegan" data-clicked=0 class="btn btn-light btn-lg planIcons text-center"><img src="https://cdn1.iconfinder.com/data/icons/flat-green-organic-natural-badges/500/Vegan-2-512.png"></button>
                             <button type="button" id="gluten" data-clicked=0 class="btn btn-light btn-lg planIcons text-center"><img src="https://www.mindfullysplendid.com/wp-content/uploads/2016/09/gluten-free-icon.png"></button>
                         </div>
-                        <button id="customPlan" type="button" class="btn btn-primary btn-lg btn-block results">Search Plans Custom For You!!</button>
+                        <button id="customPlan" type="button" class="btn btn-primary btn-lg btn-block results font-effect-shadow-multiple style"><img = src="https://d3u67r7pp2lrq5.cloudfront.net/stores/avatars/754251/medium/happygurulogo.png?1444076549">Search The Guru's Custom Plans!!</button>
 
                         `
     $("#attach").append(resultsDiv);
