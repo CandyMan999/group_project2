@@ -44,38 +44,48 @@ $("#attach").on('click', "#createCustom", function () {
             </div>
         
         </div>
-        <a id="update" class="btn btn-primary btn-lg" href="#" role="button">Update Plan</a>
+        <a id="update" class="btn btn-primary btn-lg btn-block" href="#" role="button">Update Plan</a>
         <hr id="split" class="my-4">
         
-        <div id="newFoodDiv">
-            <h3 class="text-center">Add your own food options</h3>
-            <div class="form-group">
-		        <label for="newFood">New Food Name</label>
-                <input type="text" class="form-control" id="newFoodName">
-            </div>
-            <div class="row">
-                <div class="form-group col-md-6">
-		            <label for="servingSize">Serving Size</label>
-                    <input type="text" class="form-control" id="servingSize">
-                </div>
-                <div class="form-group col-md-6">
-		            <label for="newFoodKcal">Calories per serving</label>
-                    <input type="text" class="form-control" id="newFoodKcal">
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" id="isVegan" >
-                        <label for="isVegan" class="form-check-label">Vegan</label>
+        <div class="accordion" id="accordionExample">
+            <div class="card">
+
+                    <h2 class="text-center card-header">
+                        <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">Add Your Own Food Options</button>
+                    </h2>
+
+                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div class="card-body">
+                    <div class="form-group">
+		                <label for="newFood">New Food Name</label>
+                        <input type="text" class="form-control" id="newFoodName">
                     </div>
-                    <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" id="isGlutenFree">
-                        <label for="isGlutenFree" class="form-check-label">Gluten-Free</label>
+                    <div class="row">
+                        <div class="form-group col-md-6">
+		                    <label for="servingSize">Serving Size</label>
+                            <input type="text" class="form-control" id="servingSize">
+                        </div>
+                        <div class="form-group col-md-6">
+		                    <label for="newFoodKcal">Calories per serving</label>
+                            <input type="text" class="form-control" id="newFoodKcal">
+                        </div>
                     </div>
-                </div>
-                <div class="col-md-6">
-                    <a id="addFoodItems" class="btn btn-primary btn-lg" href="#" role="button">Add new food item</a>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="isVegan" >
+                                <label for="isVegan" class="form-check-label">Vegan</label>
+                            </div>
+                            <div class="form-group form-check">
+                                <input type="checkbox" class="form-check-input" id="isGlutenFree">
+                                <label for="isGlutenFree" class="form-check-label">Gluten-Free</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <a id="addFoodItems" class="btn btn-primary btn-lg" href="#" role="button">Add new food item</a>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
         </div>`
@@ -117,6 +127,7 @@ $("#attach").on('click', "#createCustom", function () {
 })
 
 //This section is used to post the new food item to the Foods database
+
 $("#attach").on("click", "#addFoodItems", function () {
     console.log("Add food item button works");
     let newFoodItem = {
@@ -133,7 +144,7 @@ $("#attach").on("click", "#addFoodItems", function () {
         console.log(res);
         console.log("\n testing data:");
         console.log(data);
-
+        $("input").val("");
         let option = `<option class="option" value="${data.id}">(${data.name})   Serving Size: (${data.serving_size})   kcal: (${data.kcal})   Vegan: (${data.isVeg})   Gluten-Free: (${data.isFree})</option>`
         $("#attach #newItem").append(option);
     })
@@ -470,7 +481,7 @@ const results = function () {
                             
                         </div>
                         
-                        <a id="createCustom" class="btn btn-primary btn-lg" href="#" role="button">Create CustomCreate Custom</a>
+                        <button id="createCustom" class="btn btn-primary btn-lg" href="#" role="button">Create Custom</button>
                         <h1 class="text-center results"><strong>Select your diet plan options </strong></h1>
                         <div class="text-center results">
                             <button type="button" id="vegan" data-clicked=0 class="btn btn-light btn-lg planIcons text-center"><img src="https://cdn1.iconfinder.com/data/icons/flat-green-organic-natural-badges/500/Vegan-2-512.png"></button>
@@ -500,7 +511,7 @@ $("#attach").on("click", "#customPlan", function () {
         console.log("my api worked", data);
         data.forEach(element => {
             let selecetPlan =
-                `<button type="button" value="${element.id}" data-cal="${element.maxKcal}" class="btn btn-primary btn-lg picked"> ${element.name} calories: ${element.maxKcal}</button>`
+                `<button type="button" value="${element.id}" data-cal="${element.maxKcal}" class="btn btn-primary btn-lg picked mr-1"> ${element.name} calories: ${element.maxKcal}</button>`
 
             $("#attach").append(selecetPlan);
         });
@@ -608,7 +619,7 @@ $("#attach").on("click", "#gluten", function () {
 $("#male").on('click', function () {
     console.log($("#male").data("click"));
     if (!$("#male").data("click")) {
-        $("#male").css("color", "red").data("click", 1)
+        $("#male").css("color", "limegreen").data("click", 1)
         $("#female").css("color", "black");
 
     }
@@ -618,7 +629,7 @@ $("#female").on("click", function () {
     console.log($("#male").data("click"));
     if ($("#male").data("click")) {
         $("#male").css("color", "black").data("click", 0)
-        $("#female").css("color", "red");
+        $("#female").css("color", "limegreen");
 
     }
 })
