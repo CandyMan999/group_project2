@@ -1,11 +1,7 @@
 {
     "development": {
       "username": "root",
-<<<<<<< HEAD
       "password": "rootroot",
-=======
-      "password": "M4nd4741",
->>>>>>> 383165bfeb55d141c45329253b7dbede318aca25
       "database": "diet_plans",
       "host": "127.0.0.1",
       "port": 3306,
@@ -19,7 +15,7 @@
       "dialect": "mysql"
     },
     "production": {
-      "use_env_variable": "JAWSDB_URL",
-      "dialect": "mysql"
+      "use_env_variable": "JAWSDB_URL"
+      
     }
   }
