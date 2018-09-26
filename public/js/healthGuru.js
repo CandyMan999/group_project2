@@ -35,7 +35,7 @@ $("#attach").on('click', "#createCustom", function () {
 
         let newDiet = `
         <div id="activeLevel" class="dropdown text-center">
-            <h3 "text-center">Add a food to your diet plan</h3>
+            <h3 "text-center id="add" class="font-effect-shadow-multiple style">Add A Food To Your Diet Plan</h3>
             <div class="input-group mb-3">
 
                 <select id="newItem" class="custom-select" id="inputGroupSelect03" aria-label="Example select with button addon">
@@ -44,7 +44,7 @@ $("#attach").on('click', "#createCustom", function () {
             </div>
         
         </div>
-        <a id="update" class="btn btn-primary btn-lg btn-block" href="#" role="button">Update Plan</a>
+        <a id="update" class="btn btn-primary btn-lg btn-block font-effect-shadow-multiple" href="#" role="button">Update Plan</a>
         <hr id="split" class="my-4">
         
         <div class="accordion" id="accordionExample">
@@ -99,15 +99,15 @@ $("#attach").on('click', "#createCustom", function () {
         });
         let table = `<table id="table" class="table">
                     <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Food Item</th>
-                        <th scope="col">Serving Size</th>
-                        <th scope="col">Kcal</th>
-                        <th scope="col">Quantity</th>
-                        <th scope="col">Vegan</th>
-                        <th scope="col">Gluten-Free</th>
-                        <th scope="col">Remove</th>
+                    <tr class="font-effect-shadow-multiple style" >
+                        <th class="font-effect-shadow-multiple style" scope="col">#</th>
+                        <th class="font-effect-shadow-multiple style" scope="col">Food Item</th>
+                        <th class="font-effect-shadow-multiple style" scope="col">Serving Size</th>
+                        <th class="font-effect-shadow-multiple style" scope="col">Kcal</th>
+                        <th class="font-effect-shadow-multiple style" scope="col">Quantity</th>
+                        <th class="font-effect-shadow-multiple style" scope="col">Vegan</th>
+                        <th class="font-effect-shadow-multiple style" scope="col">Gluten-Free</th>
+                        <th class="font-effect-shadow-multiple style" scope="col">Remove</th>
                     </tr>
                     </thead>
                     <tbody id="tableBody">
@@ -278,6 +278,8 @@ $("#attach").on("click", "#update", function () {
 // On-click function for the Save the Plan button during the custom food plan screen 
 $("#attach").on("click", "#save", function () {
     console.log("save plan button clicked");
+    $("#planName").val('');
+    $("#attach #tableBody").remove();
 
     var planName = $("#planName").val().trim();
     var maxCalories = Number($("#attach #calories").text());
@@ -458,13 +460,13 @@ const results = function () {
     const resultMes = !BMIresult ? 'You Are A Healthy Weight!' : BMIresult === 1 ? 'You Are Overweight' : 'You Are Underweight'
     const goalMessage = BMIresult ?
         `<div id="goal" class="row results">
-        <div class="col-sm-12 text-center">                        
+        <div class="col-sm-12 text-center ">                        
         <h2 class="text-center font-effect-shadow-multiple style" >You need to <span class="obvious"> ${BMIresult === -1 ? 'GAIN' : 'LOSE'}</span>: <span class="obvious">${poundsToGoal}</span> pounds to reach a healthy weight</h2> 
         </div>
         </div>` : "";
     let resultsDiv =
-        `
-                    <h1 class="results text-center font-effect-shadow-multiple style">Results:<span class="obvious">${resultMes}</span></h1>
+        `       <div id="customResult">
+                    <h1 class="results text-center font-effect-shadow-multiple style">Results: <span class="obvious">${resultMes}</span></h1>
                         ${goalMessage}
                         <div class="row results tex-center">
                             <div class="col-sm-12 text-center">
@@ -481,14 +483,14 @@ const results = function () {
                             
                         </div>
                         <hr class="my-4">
-                        <button id="createCustom" class="btn btn-primary btn-lg" href="#" role="button">Create Custom</button>
+                        <button id="createCustom" class="btn btn-primary btn-lg style font-effect-shadow-multiple" href="#" role="button">Create Custom</button>
                         <h1 id="restrictions" class="text-center  results font-effect-shadow-multiple"><strong>Optional Restrictions</strong></h1>
                         <div class="text-center results">
                             <button type="button" id="vegan" data-clicked=0 class="btn btn-light btn-lg planIcons text-center"><img src="https://cdn1.iconfinder.com/data/icons/flat-green-organic-natural-badges/500/Vegan-2-512.png"></button>
                             <button type="button" id="gluten" data-clicked=0 class="btn btn-light btn-lg planIcons text-center"><img src="https://www.mindfullysplendid.com/wp-content/uploads/2016/09/gluten-free-icon.png"></button>
                         </div>
                         <button id="customPlan" type="button" class="btn btn-primary btn-lg btn-block results font-effect-shadow-multiple style"><img = src="https://d3u67r7pp2lrq5.cloudfront.net/stores/avatars/754251/medium/happygurulogo.png?1444076549">Search The Guru's Custom Plans!!</button>
-
+                </div>
                         `
     $("#attach").append(resultsDiv);
     $("#createCustom").css("display", "none");
@@ -523,27 +525,32 @@ $("#attach").on("click", "#customPlan", function () {
 $("#attach").on('click', '.picked', function () {
     $(".table").remove();
     $(".phrase").remove();
-
+    $("#delete").remove();
+    let id = $(this).val();
     let table = `<table class="table">
     <thead>
-      <tr>
-        <th scope="col">#</th>
-        <th scope="col">Food Item</th>
-        <th scope="col">Serving Size</th>
-        <th scope="col">Quantity</th>
-        <th scope="col">Kcal</th>
+      <tr class="font-effect-shadow-multiple style">
+        <th class="font-effect-shadow-multiple style" scope="col">#</th>
+        <th class="font-effect-shadow-multiple style" scope="col">Food Item</th>
+        <th class="font-effect-shadow-multiple style" scope="col">Serving Size</th>
+        <th class="font-effect-shadow-multiple style" scope="col">Quantity</th>
+        <th class="font-effect-shadow-multiple style" scope="col">Kcal</th>
       </tr>
     </thead>
     <tbody id="tableBody">
       
     </tbody>
-  </table>`
+  </table>
+  <button id="delete" value="${id}" type="button" class="btn btn-primary btn-lg font-effect-shadow-multiple style">Delete plan</button>
+
+  `
 
     $("#attach").append(table)
-
+    
+  
 
     console.log($(this).val());
-    let id = $(this).val();
+    
     dietPlan = $(this).data('cal');
 
     let daysToGoal = ((poundsToGoal * 3500) / (Math.abs(dietPlan - TEE)));
@@ -768,3 +775,13 @@ $("#guru").on('click', function () {
     $("#attach").css("opacity", "1");
 })
 
+$("#attach").on('click', '#delete', function(){
+    let id = $(this).val();
+    console.log("delete id is: ", id)
+
+    $.ajax({
+        method: "DELETE",
+        url:'/api/plans/' + id
+    }).then(results)
+    location.reload();
+})
