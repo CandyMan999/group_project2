@@ -8,7 +8,7 @@
 }
 
 #male {
-    color: red;
+    color: limegreen;
     font-size: 100px;
     margin: 15px;
 }
@@ -48,10 +48,27 @@ img {
 }
 #gender {
     font-family: 'Rancho', serif;
+    color: plum;
     font-size: 60px;
 }
 
 .style {
     font-family: 'Rancho', serif;
     font-size: 60px;
+    color:plum;
+}
+
+.card-header{
+    background-color: #007bff;
+}
+
+.btn-link{
+    color:#fff;
+    font-size: 1.25rem;
+}
+#createCustom{
+    float:right;
+    background-color: plum;
+    color: limegreen;
+    text-shadow: 2px 2px black;
 }
