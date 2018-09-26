@@ -44,8 +44,42 @@ $("#attach").on('click', "#createCustom", function () {
             </div>
         
         </div>
+        <a id="update" class="btn btn-primary btn-lg" href="#" role="button">Update Plan</a>
         <hr id="split" class="my-4">
-        <a id="update" class="btn btn-primary btn-lg" href="#" role="button">Update Plan</a>`
+        
+        <div id="newFoodDiv">
+            <h3 class="text-center">Add your own food options</h3>
+            <div class="form-group">
+		        <label for="newFood">New Food Name</label>
+                <input type="text" class="form-control" id="newFoodName">
+            </div>
+            <div class="row">
+                <div class="form-group col-md-6">
+		            <label for="servingSize">Serving Size</label>
+                    <input type="text" class="form-control" id="servingSize">
+                </div>
+                <div class="form-group col-md-6">
+		            <label for="newFoodKcal">Calories per serving</label>
+                    <input type="text" class="form-control" id="newFoodKcal">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="isVegan" >
+                        <label for="isVegan" class="form-check-label">Vegan</label>
+                    </div>
+                    <div class="form-group form-check">
+                        <input type="checkbox" class="form-check-input" id="isGlutenFree">
+                        <label for="isGlutenFree" class="form-check-label">Gluten-Free</label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <a id="addFoodItems" class="btn btn-primary btn-lg" href="#" role="button">Add new food item</a>
+                </div>
+            </div>
+        </div>`
+        
 
         $("#attach").append(newDiet);
 
@@ -79,6 +113,22 @@ $("#attach").on('click', "#createCustom", function () {
                     </div>`
 
         $("#attach").append(table);
+    })
+})
+
+//This section is used to post the new food item to the Foods database
+$("#attach").on("click", "#addFoodItems", function (){
+    console.log("Add food item button works");
+    let newFoodItem = {
+        name: $("#newFoodName").val().trim(),
+        serving_size: $("#servingSize").val().trim(),
+        kcal: Number($("#newFoodKcal").val().trim()),
+        isVeg: $("#isVegan").is(":checked"),
+        isFree: $("#isGlutenFree").is(":checked")
+    }
+    console.log(newFoodItem);
+    $.post("/api/foods/new", newFoodItem, function(err, res){
+        console.log("post: ", err, res)
     })
 })
 
