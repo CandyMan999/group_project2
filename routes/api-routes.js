@@ -270,7 +270,7 @@ module.exports = function (app) {
             console.log("New food added to Foods table");
             console.log("results: ");
             console.log(results);
-            res.end();
+            res.send(results);
         });
     })
 

@@ -79,7 +79,7 @@ $("#attach").on('click', "#createCustom", function () {
                 </div>
             </div>
         </div>`
-        
+
 
         $("#attach").append(newDiet);
 
@@ -117,7 +117,7 @@ $("#attach").on('click', "#createCustom", function () {
 })
 
 //This section is used to post the new food item to the Foods database
-$("#attach").on("click", "#addFoodItems", function (){
+$("#attach").on("click", "#addFoodItems", function () {
     console.log("Add food item button works");
     let newFoodItem = {
         name: $("#newFoodName").val().trim(),
@@ -127,8 +127,15 @@ $("#attach").on("click", "#addFoodItems", function (){
         isFree: $("#isGlutenFree").is(":checked")
     }
     console.log(newFoodItem);
-    $.post("/api/foods/new", newFoodItem, function(err, res){
-        console.log("post: ", err, res)
+    $.post("/api/foods/new", newFoodItem, function (data, res) {
+        console.log("post: ", data, res);
+        console.log("\n testing res:");
+        console.log(res);
+        console.log("\n testing data:");
+        console.log(data);
+
+        let option = `<option class="option" value="${data.id}">(${data.name})   Serving Size: (${data.serving_size})   kcal: (${data.kcal})   Vegan: (${data.isVeg})   Gluten-Free: (${data.isFree})</option>`
+        $("#attach #newItem").append(option);
     })
 })
 
