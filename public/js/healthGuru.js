@@ -278,8 +278,7 @@ $("#attach").on("click", "#update", function () {
 // On-click function for the Save the Plan button during the custom food plan screen 
 $("#attach").on("click", "#save", function () {
     console.log("save plan button clicked");
-    $("#planName").val('');
-    $("#attach #tableBody").remove();
+    
 
     var planName = $("#planName").val().trim();
     var maxCalories = Number($("#attach #calories").text());
@@ -404,7 +403,8 @@ $("#attach").on("click", "#save", function () {
     //     .then(function () {
     //         console.log("sent to post route /api/plans");
     //     });
-
+    $("#planName").val('');
+    $("#attach #tableBody").remove();
 });
 
 // $("#attach").on('click', '#save', function () {
