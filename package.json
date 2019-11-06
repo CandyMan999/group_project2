@@ -25,6 +25,6 @@
     "materialize-css": "^1.0.0-rc.2",
     "mysql2": "^1.6.1",
     "npm": "^6.4.1",
-    "sequelize": "^4.38.1"
+    "sequelize": "^5.15.1"
   }
 }
